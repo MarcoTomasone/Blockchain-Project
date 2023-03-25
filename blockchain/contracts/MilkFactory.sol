@@ -15,9 +15,13 @@ contract MilkFactory {
         uint256 cowId;
     }
 
-    struct Product {
+    struct Product { //Should add more info about product 
         uint256 id;
         uint256 milkId;
+    }
+
+    constructor() {
+        owner = msg.sender;
     }
 
     modifier onlyOwnerOf(uint256 _cowId) {
@@ -25,10 +29,13 @@ contract MilkFactory {
         _;
     }
 
+    Product[] storage productList;
+
     mapping(uint256 => address) public cowToOwner;
     mapping(address => uint256) public ownerCowCount;
     mapping(uint256 => Milk[]) public cowToMilkList;
     mapping(uint256 => Product[]) public milkToProductList;
+    mapping(uint256 => uint256) public milkToCow;
 
     function addCow(uint256 _cowId) public {
         cowToOwner[_cowId] = msg.sender;
@@ -37,6 +44,23 @@ contract MilkFactory {
     
     function addMilk(uint256 _cowId, uint256 _milkId) public onlyOwnerOf(_cowId) {
         cowToMilkList[_cowId].push(Milk(_milkId, _cowId));
+    }
+
+    function addProduct(uint256 _productId, uint256 _milkId) public onlyOwnerOf(milkToCow[_milkId]) {
+        milkToProductList[_milkId] = Product(_productId, _milkId);
+    }
+
+    function getAllProducts() view returns(Product[] memory) {
+        return productList;
+    }
+
+    function getProduct(uint256 _productId) view returns(Product memory) {
+        for(uint i=0; i < productList.lenght; i++) { 
+            if(productList[i].id == _productId) {
+                return productList[i];
+            }
+        }
+        revert("Product not found!"); //Undo, return value, give back gas 
     }
 
 }
