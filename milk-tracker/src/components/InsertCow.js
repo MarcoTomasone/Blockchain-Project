@@ -1,7 +1,7 @@
 export default function InsertCow() {
     return(
         <div>
-            <h1>InsertCow</h1>
+          <h1>Insert Cow</h1>
         </div>
     );
 }

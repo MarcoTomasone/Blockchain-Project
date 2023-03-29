@@ -4,24 +4,27 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
+import cow from '../img/cow.png';
+import milk from '../img/milk.png';
+import products from '../img/products.jpg';
 
 
 
 const images = [
     {
-    imgageUrl: '../img/cow.png',
+    imageUrl: cow,
     title: 'Cow',
     width: '33%',
     toUrl: '/cow',
     },
     {
-    imageUrl: '../img/milk.png',
+    imageUrl: milk,
     title: 'Milk',
     width: '34%',
     toUrl: '/milk',
     },
     {
-    imageUrl: '../img/products.jpg',
+    imageUrl: products,
     title: 'Products',
     width: '33%',
     toUrl: '/products',
