@@ -20,16 +20,16 @@ contract MilkFactory {
         uint256 milkId;
     }
 
-    constructor() {
-        owner = msg.sender;
-    }
+    //constructor() {
+    //    owner = msg.sender;
+    //}
 
     modifier onlyOwnerOf(uint256 _cowId) {
         require(cowToOwner[_cowId] == msg.sender, "You are not the owner of this cow");
         _;
     }
 
-    Product[] storage productList;
+    Product[] productList;
 
     mapping(uint256 => address) public cowToOwner;
     mapping(address => uint256) public ownerCowCount;
@@ -47,15 +47,15 @@ contract MilkFactory {
     }
 
     function addProduct(uint256 _productId, uint256 _milkId) public onlyOwnerOf(milkToCow[_milkId]) {
-        milkToProductList[_milkId] = Product(_productId, _milkId);
+        milkToProductList[_milkId].push(Product(_productId, _milkId));
     }
 
-    function getAllProducts() view returns(Product[] memory) {
+    function getAllProducts() public view returns(Product[] memory) {
         return productList;
     }
 
-    function getProduct(uint256 _productId) view returns(Product memory) {
-        for(uint i=0; i < productList.lenght; i++) { 
+    function getProduct(uint256 _productId) public view returns(Product memory) {
+        for(uint i=0; i < productList.length; i++) { 
             if(productList[i].id == _productId) {
                 return productList[i];
             }

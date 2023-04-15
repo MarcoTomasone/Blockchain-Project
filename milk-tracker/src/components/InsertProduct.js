@@ -40,7 +40,7 @@ export default function InsertProduct() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', paddingTop: '2vh', marginLeft: '-300px', overflow:'hidden'}}>
       <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue", marginLeft: "-475px" }}>Insert data products</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
-      <TextField id="productId" label="Products Id"  variant="filled" borderColor="blue" borderRadius={10} focused  />
+      <TextField id="productsId" label="Products Id"  variant="filled" borderColor="blue" borderRadius={10} focused  />
       </div>
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <TextField id="milkId" label="Milk Id" variant="filled" borderColor="blue" borderRadius={10} focused />
