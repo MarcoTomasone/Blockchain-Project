@@ -91,7 +91,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
 function LoginView() {
 
     // Enable/Disable console debug.
-    const isConsoleActive = false;
+    const isConsoleActive = true;
     // Variable to navigate to another page.
     const navigator = useNavigate();
     // Variable to set the popup modal (show, title and body).            
