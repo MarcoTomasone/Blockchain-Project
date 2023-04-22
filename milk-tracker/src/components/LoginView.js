@@ -7,19 +7,21 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import cow from '../img/cow.png';
 import milk from '../img/milk.png';
+import { Alert } from '@mui/material';
+import AlertDialog from './AlertDialog';
 
 const images = [
     {
     imageUrl: cow,
     title: 'Dairy',
     width: '50%',
-    toUrl: '/cow',
+    toUrl: '/insert',
     },
     {
     imageUrl: milk,
     title: 'Client',
     width: '50%',
-    toUrl: '/milk',
+    toUrl: '/milk', //TODO: Change to view section for clients
     },
 ];
 
@@ -103,10 +105,8 @@ function LoginView() {
         if (isConsoleActive) console.log("Verifica presenza di MetaMask");
         // Check if MetaMask is installed.
         if (typeof window.ethereum === 'undefined') {
-            setTitle("Errore di connessione");
-            setBody("Non è stato trovato nessun provider di Ethereum. Assicurati di aver installato MetaMask.");
-            //setErrorPopup(true);
-            return;
+            //alert("Metamask non installato");
+            AlertDialog({title: "Connection Error", description: "Metamask not installed"});
         }
         // Try to connect to MetaMask.
         if (isConsoleActive) console.log("Tentativo di accesso a MetaMask");
@@ -117,9 +117,8 @@ function LoginView() {
                 navigator(toUrl);
             })
             .catch(() => {
-                setTitle("Errore di connessione");
-                setBody("Si è verificato un errore durante la connessione a MetaMask. Riprova più tardi.");
-                //setErrorPopup(true);
+                return <AlertDialog title={"Connection Error"} description={"Error during the connection to Metamask. Try later."}></AlertDialog>;
+
             });
     }
 
