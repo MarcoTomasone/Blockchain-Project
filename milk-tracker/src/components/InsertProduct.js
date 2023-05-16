@@ -1,8 +1,14 @@
 import TextField from  '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/products.jpg';
+import { getAccounts, addProduct} from '../utils/web3access.mjs';
 
 export default function InsertProduct() {
+  var myAccounts;
+  getAccounts().then((accounts) => {
+    myAccounts = accounts;
+    console.log(accounts);
+  });
 
   const TextFieldIds = ["productsId", "milkId", "dateOfProduction", "productsType", "expiryDate"];
 
@@ -29,7 +35,8 @@ export default function InsertProduct() {
         document.getElementById(id).value = "";
         document.getElementById(id).style.border = "2px solid blue";
       });
-      console.log(data);  //TODO: pass data to the Blockchain 
+      console.log(data);  
+      addProduct(myAccounts[0], data);
     }
     else 
       alert("Please fill all the fields");

@@ -1,9 +1,17 @@
 import TextField from  '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/cow.png';
-
+import { getAccounts, addCow} from '../utils/web3access.mjs';
 
 export default function InsertCow() {
+  var myAccounts;
+  getAccounts().then((accounts) => {
+    myAccounts = accounts;
+    console.log(accounts);
+  });
+
+
+
 
   const TextFieldIds = ["cowId", "cowBreed", "cowBirth", "cowResidence", "cowWeight"];
 
@@ -30,7 +38,9 @@ export default function InsertCow() {
         document.getElementById(id).value = "";
         document.getElementById(id).style.border = "2px solid blue";
       });
-      console.log(data);  //TODO: pass data to the Blockchain 
+      console.log(data); 
+      console.log(myAccounts[0]);
+      addCow(myAccounts[0], data);
     }
     else 
       alert("Please fill all the fields");

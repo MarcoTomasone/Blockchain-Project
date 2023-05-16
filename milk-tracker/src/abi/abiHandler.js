@@ -11,4 +11,9 @@ function getContractABI() {
     return getContractJSON().abi;
 }
 
-console.log(getContractAddress());
+module.exports = {
+    getContractABI,
+    getContractAddress
+};
+
+
