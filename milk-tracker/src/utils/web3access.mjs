@@ -18,13 +18,13 @@ function getAccounts() {
 function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addCow( data.cowId,  data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidences)
+    return MilkFactoryContract.methods.addCow( data.cowId,  data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
             .send({ from: account });
 }
 
 function addMilk(account, data) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addMilk(data.milkId, data.cowId, data.dateOfProduction, data.dairyName, data.dairyPlace)
+    return MilkFactoryContract.methods.addMilk(data.milkId, data.cowId, data.dateOfProduction)
                 .send({ from: account });
 }
 

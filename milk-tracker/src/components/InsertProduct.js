@@ -14,7 +14,7 @@ export default function InsertProduct() {
 
   const sendData = () => {
     const data = {
-      productsId: document.getElementById("productsId").value,
+      productId: document.getElementById("productsId").value,
       milkId: document.getElementById("milkId").value,
       dateOfProduction: document.getElementById("dateOfProduction").value,
       productsType: document.getElementById("productsType").value,
