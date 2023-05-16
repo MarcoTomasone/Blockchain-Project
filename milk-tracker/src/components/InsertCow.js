@@ -47,25 +47,29 @@ export default function InsertCow() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', paddingTop: '2vh', marginLeft: '-300px', overflow:'hidden'}}>
-      <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue", marginLeft: "-475px" }}>Insert data cow</h2>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-      <TextField id="cowId"  label="Cow Id"  variant="filled" borderColor="blue" borderRadius={10} focused  />
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%', paddingTop: '2vh' }}>
+        <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: 'blue' }}>Insert data cow</h2>
+        <div style={{ marginBottom: '30px', width: '50%' }}>
+          <TextField style={{ width: '100%' }} id="cowId" label="Cow Id" variant="filled" borderColor="blue" borderRadius={10} focused />
+        </div>
+        <div style={{ marginBottom: '30px', width: '50%' }}>
+          <TextField style={{ width: '100%' }} id="cowBreed" label="Cow Breed" variant="filled" borderColor="blue" borderRadius={10} focused />
+        </div>
+        <div style={{ marginBottom: '30px', width: '50%' }}>
+          <TextField style={{ width: '100%' }} id="cowBirth" label="Cow Birth" variant="filled" borderColor="blue" borderRadius={10} focused />
+        </div>
+        <div style={{ marginBottom: '30px', width: '50%' }}>
+          <TextField style={{ width: '100%' }} id="cowResidence" label="Cow Residence" variant="filled" borderColor="blue" borderRadius={10} focused />
+        </div>
+        <div style={{ marginBottom: '30px', width: '50%' }}>
+          <TextField style={{ width: '100%' }} id="cowWeight" label="Cow Weight" variant="filled" borderColor="blue" borderRadius={10} focused />
+          <Button onClick={sendData} variant="contained" color="primary" style={{margin : '40px'}}>Send</Button>
+        </div>
       </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="cowBreed" label="Cow Breed" variant="filled" borderColor="blue" borderRadius={10} focused />
+      <div style={{ width: '70%', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', backgroundImage: `url(${cow})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'right', opacity: 0.8, zIndex: -1 }}></div>
       </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="cowBirth" label="Cow Birth"  variant="filled" borderColor="blue" borderRadius={10} focused />
-      </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="cowResidence" label="Cow Residence"  variant="filled" borderColor="blue" borderRadius={10} focused />
-      </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="cowWeight" label="Cow Weight"  variant="filled" borderColor="blue" borderRadius={10} focused />
-      </div>
-      <Button onClick={sendData} variant="contained" color="primary" style={{marginLeft: "-475px"}}>Send</Button>
-      <div style={{ position: 'absolute', top: 70, left: 0, width: '100vw', height: '86vh', backgroundImage: `url(${cow})`, backgroundSize: '78% 100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'left center',  opacity: '0.8', zIndex: '-1', marginLeft: "300px"}}></div>
     </div>
   );
 }

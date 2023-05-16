@@ -47,6 +47,7 @@ contract MilkFactory {
     mapping(uint256 => Product[]) public milkToProductList;
     mapping(uint256 => uint256) public milkToCow;
 
+
     function addCow(uint256 _cowId, uint256 _weight, string memory _breed, string memory _birthDate, string memory _residence) public {
         Cow memory myCow = Cow(_cowId, _weight, _breed, _birthDate, _residence);
         cowList.push(myCow);
