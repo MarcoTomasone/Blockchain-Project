@@ -18,14 +18,38 @@ function getAccounts() {
 function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addCow( data.cowId,  data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
-            .send({ from: account });
+    return MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
+            .send({ from: account, gas:3000000 });
+}
+
+function getAllCows(account){
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkFactoryContract.methods.getAllCows()
+            .call({ from: account, gas:3000000});
+}
+
+function getCowsOfOwner(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkFactoryContract.methods.getCowsOfOwner()
+            .call({ from: account, gas:3000000});
 }
 
 function addMilk(account, data) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addMilk(data.milkId, data.cowId, data.dateOfProduction)
-                .send({ from: account });
+    return MilkFactoryContract.methods.addMilk(data.cowId, data.dateOfProduction)
+                .send({ from: account, gas:3000000 });
+}
+
+function getAllMilk(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkFactoryContract.methods.getAllMilk()
+                .call({ from: account, gas:3000000});
+}
+
+function getMilksOfOwner(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());  
+    return MilkFactoryContract.methods.getMilksOfOwner()
+                .call({ from: account, gas:3000000});   
 }
 
 function addProduct(account, data) {
@@ -34,40 +58,6 @@ function addProduct(account, data) {
                 .send({ from: account });
 }
 
-export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct};
+export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner};
 
 
-
-/*
-
-//console.log(web3);
-
-web3.eth.getAccounts().then(console.log)
-
-// Ora puoi utilizzare le funzioni importate
-const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-//console.log(MilkFactoryContract);
-
-
-/*
-var myAddress;
-web3.eth.getAccounts()
-.then((accounts) => {
-       myAddress = accounts[0];
-    console.log(myAddress);
-    MilkFactoryContract.methods.addCow(cowId).send({ from: myAddress }).then((receipt) => {
-        // La transazione è stata confermata
-        console.log("Ho fatto");
-        console.log(receipt);
-    })
-    .catch((error) => {
-        // Si è verificato un errore durante l'esecuzione della transazione
-        console.error(error);
-        console.log("Non Ho fatto");
-    });
-
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-*/

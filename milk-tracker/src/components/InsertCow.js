@@ -1,23 +1,33 @@
+import React, { useState, useEffect } from 'react';
 import TextField from  '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/cow.png';
-import { getAccounts, addCow} from '../utils/web3access.mjs';
+import { getAccounts, addCow, getAllCows, getCowsOfOwner} from '../utils/web3access.mjs';
 
 export default function InsertCow() {
-  var myAccounts;
-  getAccounts().then((accounts) => {
-    myAccounts = accounts;
-    console.log(accounts);
-  });
+  
+  
+  const [myAccount, setMyAccounts] = useState(null);
+  const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
 
+  //Component Did Mount
+  useEffect(() => {
+    console.log(myAccount);
+    //TODO: why if defult account is account2 it sets account1?
+    getAccounts().then((accounts) => {
+      setMyAccounts(accounts[0]);
+      console.log(accounts[0]);
+    });
 
+    window.ethereum.on('accountsChanged', function (accounts) {
+      setMyAccounts(accounts[0]);
+      console.log(accounts[0]);
+    });
 
-
-  const TextFieldIds = ["cowId", "cowBreed", "cowBirth", "cowResidence", "cowWeight"];
+  }, []);
 
   const sendData = () => {
     const data = {
-      cowId: document.getElementById("cowId").value,
       cowBreed: document.getElementById("cowBreed").value,
       cowBirth: document.getElementById("cowBirth").value,
       cowResidence: document.getElementById("cowResidence").value,
@@ -39,8 +49,8 @@ export default function InsertCow() {
         document.getElementById(id).style.border = "2px solid blue";
       });
       console.log(data); 
-      console.log(myAccounts[0]);
-      addCow(myAccounts[0], data);
+      console.log(myAccount);
+      addCow(myAccount, data);
     }
     else 
       alert("Please fill all the fields");
@@ -48,11 +58,8 @@ export default function InsertCow() {
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%', paddingTop: '2vh' }}>
+      <div style={{ display: 'inline', flexDirection: 'column', alignItems: 'center', width: '30%', paddingTop: '2vh' }}>
         <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: 'blue' }}>Insert data cow</h2>
-        <div style={{ marginBottom: '30px', width: '50%' }}>
-          <TextField style={{ width: '100%' }} id="cowId" label="Cow Id" variant="filled" borderColor="blue" borderRadius={10} focused />
-        </div>
         <div style={{ marginBottom: '30px', width: '50%' }}>
           <TextField style={{ width: '100%' }} id="cowBreed" label="Cow Breed" variant="filled" borderColor="blue" borderRadius={10} focused />
         </div>
