@@ -6,7 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import cow from '../img/milk.png';
+import milk from '../img/milk1.jpg';
 import { getAccounts, addMilk, getAllCows, getCowsOfOwner} from '../utils/web3access.mjs';
 
 export default function InsertMilk() {
@@ -80,12 +80,49 @@ export default function InsertMilk() {
       alert("Please fill all the fields");
   };
 
+  const containerStyle = {
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+    width: '100%',
+    height: '100%',
+  };
+
+  const milkImageStyle = {
+    position: 'absolute',
+    top: '10%',
+    right: 0,
+    width: '100%',
+    height: '90%',
+    backgroundImage: `url(${milk})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right',
+    opacity: 0.9,
+    zIndex: -1,
+  };
+
+  const formContainerStyle = {
+    position: 'absolute',
+    top: '25%',
+    right: '40px',
+    bottom: '15%',
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '2vh',
+    backgroundColor: 'white', // Aggiunge uno sfondo di colore rosso
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', paddingTop: '2vh', marginLeft: '-300px', overflow:'hidden'}}>
-      <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue", marginLeft: "-475px" }}>Insert data milk</h2>
+    <div style={containerStyle}>
+      <div style={formContainerStyle}>
+      <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue"}}>Insert data milk</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="demo-simple-select-label">Cow</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -104,8 +141,9 @@ export default function InsertMilk() {
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <TextField id="dateOfProduction" label="Date of Production"  variant="filled" borderColor="blue" borderRadius={10} focused />
       </div>
-      <Button onClick={sendData} variant="contained" color="primary" style={{marginLeft: "-475px"}}>Send</Button>
-      <div style={{ position: 'absolute', top: 70, left: 0, width: '100vw', height: '86vh', backgroundImage: `url(${cow})`, backgroundSize: '78% 100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'left center',  opacity: '0.8', zIndex: '-1', marginLeft: "300px"}}></div>
+      <Button onClick={sendData} variant="contained" color="primary">Send</Button>
+      </div>
+      <div style={milkImageStyle}></div>
     </div>
   );
 }
