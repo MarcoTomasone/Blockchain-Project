@@ -5,8 +5,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import cow from '../img/products.jpg';
 import { getAccounts, addProduct, getAllMilk, getMilksOfOwner} from '../utils/web3access.mjs';
+import product from '../img/products.jpg';
 
 export default function InsertProduct() {
   const [myAccount, setMyAccounts] = useState(null);
@@ -80,10 +80,47 @@ export default function InsertProduct() {
       alert("Please fill all the fields");
   };
 
+  const containerStyle = {
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+    width: '100%',
+    height: '100%',
+  };
+
+  const productImageStyle = {
+    position: 'absolute',
+    top: '10%',
+    right: 0,
+    width: '100%',
+    height: '90%',
+    backgroundImage: `url(${product})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right',
+    opacity: 0.99,
+    zIndex: -1,
+  };
+
+  const formContainerStyle = {
+    position: 'absolute',
+    top: '13%',
+    right: '40px',
+    bottom: '1%',
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '2vh',
+    backgroundColor: 'white', // Aggiunge uno sfondo di colore rosso
+  };
+
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', paddingTop: '2vh', marginLeft: '-300px', overflow:'hidden'}}>
-      <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue", marginLeft: "-475px" }}>Insert data products</h2>
+    <div style={containerStyle}>
+      <div style={formContainerStyle}>
+      <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Cow</InputLabel>
@@ -111,8 +148,9 @@ export default function InsertProduct() {
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <TextField id="expiryDate" label="Expiry date"  variant="filled" borderColor="blue" borderRadius={10} focused />
       </div>
-      <Button onClick={sendData} variant="contained" color="primary" style={{marginLeft: "-475px"}}>Send</Button>
-      <div style={{ position: 'absolute', top: 70, left: 0, width: '100vw', height: '86vh', backgroundImage: `url(${cow})`, backgroundSize: '78% 100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'left center',  opacity: '0.8', zIndex: '-1', marginLeft: "300px"}}></div>
+      <Button onClick={sendData} variant="contained" color="primary">Send</Button>
+      </div>
+      <div style={productImageStyle}></div>
     </div>
   );
 }
