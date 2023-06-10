@@ -53,6 +53,7 @@ contract MilkFactory {
     mapping(address => Cow[]) public ownerToCowList;
     mapping(uint256 => Milk[]) public cowToMilkList;
     mapping(uint256 => Product[]) public milkToProductList;
+    mapping(address => Milk[]) public ownerToMilk;
     //mapping(uint256 => uint256) public milkToCow;
 
 
@@ -73,6 +74,7 @@ contract MilkFactory {
         cowToMilkList[_cowId].push(myMilk);
         milkToCow[myMilk.id] = _cowId;
         ownerMilkCount[msg.sender]++; 
+        ownerToMilk[msg.sender].push(myMilk);
     }
     
     function addProduct(uint256 _milkId, string memory _dateOfProduction, string memory _productType, string memory _expiryDate) public onlyOwnerOf(milkToCow[_milkId]) {
@@ -98,17 +100,7 @@ contract MilkFactory {
 
     //TODO: Alternative to for is to create a mapping user->milk[] ?
     function getMilksOfOwner() public view returns (Milk[] memory) {
-        Milk[] memory userMilkList = new Milk[](ownerMilkCount[msg.sender]-1);
-        uint256 count = 0;
-
-        for (uint256 i = 0; i < ownerToCowList[msg.sender].length; i++) {
-            uint256 cowId = ownerToCowList[msg.sender][i].id;
-            for (uint256 j = 0; j < cowToMilkList[cowId].length; j++) {
-                userMilkList[count] = cowToMilkList[cowId][j];
-                count++;
-            }
-        }
-        return userMilkList;    
+        return ownerToMilk[msg.sender];    
     }
 
     

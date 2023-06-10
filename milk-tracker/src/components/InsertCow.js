@@ -14,7 +14,7 @@ export default function InsertCow() {
     // TODO: why if default account is account2 it sets account1?
     getAccounts().then((accounts) => {
       setMyAccount(accounts[0]);
-      console.log(accounts[0]);
+      console.log(myAccount);
       if(myAccount != null){
         insertFakeData(myAccount);
         console.log("Fake data inserted");
