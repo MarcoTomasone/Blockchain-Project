@@ -34,6 +34,8 @@ export default function InsertProduct() {
   useEffect(() => {
     if (myAccount !== null) {  
       getMilksOfOwnerFromContract().then((milkList) => {
+        console.log("milkList")
+        console.log(milkList);
         setMilkList(milkList);
       });  
     }
@@ -123,7 +125,7 @@ export default function InsertProduct() {
       <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Cow</InputLabel>
+          <InputLabel id="demo-simple-select-label">Milk</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -133,7 +135,7 @@ export default function InsertProduct() {
           >
             {milkList.map((milk) => (
               <MenuItem key={milk.id} value={milk.id}>
-                ID: {milk.id} CowID: {milk.cowId} Residence: {milk.dateOfProduction} 
+                MilkID: {milk.id} CowID: {milk.cowId} Date Of Production: {milk.dateOfProduction} 
               </MenuItem>
             ))}
           </Select>

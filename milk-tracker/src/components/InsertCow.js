@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/cow1.jpg';
-import { getAccounts, addCow, getAllCows, getCowsOfOwner } from '../utils/web3access.mjs';
+import { getAccounts, addCow, getAllCows, getCowsOfOwner, insertFakeData } from '../utils/web3access.mjs';
 
 export default function InsertCow() {
   const [myAccount, setMyAccount] = useState(null);
@@ -15,6 +15,10 @@ export default function InsertCow() {
     getAccounts().then((accounts) => {
       setMyAccount(accounts[0]);
       console.log(accounts[0]);
+      if(myAccount != null){
+        insertFakeData(myAccount);
+        console.log("Fake data inserted");
+      }
     });
 
     window.ethereum.on('accountsChanged', function (accounts) {

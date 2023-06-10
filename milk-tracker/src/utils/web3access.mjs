@@ -63,6 +63,14 @@ function addProduct(account, data) {
                 .send({ from: account });
 }
 
-export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner};
+function insertFakeData(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    addCow(account, {cowWeight: 100, cowBreed: "Account1_Cow0", cowBirth: "2021-01-01", cowResidence: "Milano"});
+    addCow(account, {cowWeight: 200, cowBreed: "Account1_Cow1", cowBirth: "2021-01-01", cowResidence: "Manfredonia"});
+    addMilk(account, {cowId: 0, dateOfProduction: "Account1_Cow0_Milk0"});
+    addMilk(account, {cowId: 1, dateOfProduction: "Account1_Cow1_Milk1"});
+}
+
+export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData};
 
 
