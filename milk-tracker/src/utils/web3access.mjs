@@ -47,9 +47,14 @@ function getAllMilk(account) {
 }
 
 function getMilksOfOwner(account) {
+    try {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());  
     return MilkFactoryContract.methods.getMilksOfOwner()
                 .call({ from: account, gas:3000000});   
+    } catch (error) {
+        console.log("SONO IN ERRORE");
+
+    }
 }
 
 function addProduct(account, data) {

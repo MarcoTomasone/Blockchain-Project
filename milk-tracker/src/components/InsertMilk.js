@@ -13,7 +13,7 @@ export default function InsertMilk() {
   const [myAccount, setMyAccounts] = useState(null);
   const [cowList, setCowList] = useState([]);
   const [cowId, setCowId] = useState(null);
-  const TextFieldIds = ["dateOfProduction", "dairyName", "dairyPlace"];
+  const TextFieldIds = ["dateOfProduction"];
   
   //Component Did Mount
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function InsertMilk() {
       <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue", marginLeft: "-475px" }}>Insert data milk</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="demo-simple-select-label">Cow</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"

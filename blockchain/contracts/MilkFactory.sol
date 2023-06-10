@@ -72,6 +72,7 @@ contract MilkFactory {
         milkList.push(myMilk);
         cowToMilkList[_cowId].push(myMilk);
         milkToCow[myMilk.id] = _cowId;
+        ownerMilkCount[msg.sender]++;
         
     }
     
