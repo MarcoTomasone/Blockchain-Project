@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/cow1.jpg';
@@ -7,32 +8,31 @@ import { getAccounts, addCow, getAllCows, getCowsOfOwner, insertFakeData } from 
 export default function InsertCow() {
   const [myAccount, setMyAccount] = useState(null);
   const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
+  const navigate = useNavigate()
 
-  // Component Did Mount
-  useEffect(() => {
-    console.log(myAccount);
-    // TODO: why if default account is account2 it sets account1?
+    useEffect(() => {
+    console.log("OPENING LOG: " + myAccount);
     getAccounts().then((accounts) => {
-      setMyAccount(accounts[0]);
-      console.log(myAccount);
-      if(myAccount != null){
-        insertFakeData(myAccount);
-        console.log("Fake data inserted");
-      }
+        console.log("GET: " + accounts);
+        console.log("ACCOUNT0: " + accounts[0]);
+        setMyAccount(accounts[0]);
     });
+    }, []); // empty dependency array to run only once
+
+    useEffect(() => {
+        console.log("ACCOUNT CHANGED: " + myAccount);  
+    }, [myAccount]);
 
     window.ethereum.on('accountsChanged', function (accounts) {
-      setMyAccount(accounts[0]);
-      console.log(accounts[0]);
+        setMyAccount(accounts[0]);
     });
-  }, []);
 
-  const sendData = () => {
+    const sendData = () => {
     const data = {
-      cowBreed: document.getElementById("cowBreed").value,
-      cowBirth: document.getElementById("cowBirth").value,
-      cowResidence: document.getElementById("cowResidence").value,
-      cowWeight: document.getElementById("cowWeight").value,
+        cowBreed: document.getElementById("cowBreed").value,
+        cowBirth: document.getElementById("cowBirth").value,
+        cowResidence: document.getElementById("cowResidence").value,
+        cowWeight: document.getElementById("cowWeight").value,
     };
     let allFieldsFilled = true;
 
@@ -51,7 +51,11 @@ export default function InsertCow() {
       });
       console.log(data);
       console.log(myAccount);
-      addCow(myAccount, data);
+      var result = addCow(myAccount, data);
+      if(result) 
+        alert("Cow added successfully");
+      else
+        alert("Error during cow adding");
     } else {
       alert("Please fill all the fields");
     }
@@ -98,17 +102,18 @@ export default function InsertCow() {
         <div style={formContainerStyle}>
           <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: 'blue' }}>Insert data cow</h2>
           <div style={{ marginBottom: '30px', width: '50%' }}>
-            <TextField style={{ width: '100%' }} id="cowBreed" label="Cow Breed" variant="filled" borderColor="blue" borderRadius={10} focused />
+            <TextField style={{ width: '100%' }} id="cowBreed" label="Cow Breed" variant="filled" bordercolor="blue" borderradius={10} focused />
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
-            <TextField style={{ width: '100%' }} id="cowBirth" label="Cow Birth" variant="filled" borderColor="blue" borderRadius={10} focused />
+            <TextField style={{ width: '100%' }} id="cowBirth" label="Cow Birth" variant="filled" bordercolor="blue" borderradius={10} focused />
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
-            <TextField style={{ width: '100%' }} id="cowResidence" label="Cow Residence" variant="filled" borderColor="blue" borderRadius={10} focused />
+            <TextField style={{ width: '100%' }} id="cowResidence" label="Cow Residence" variant="filled" bordercolor="blue" borderradius={10} focused />
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
-            <TextField style={{ width: '100%' }} id="cowWeight" label="Cow Weight" variant="filled" borderColor="blue" borderRadius={10} focused />
+            <TextField style={{ width: '100%' }} id="cowWeight" label="Cow Weight" variant="filled" bordercolor="blue" borderradius={10} focused />
             <Button onClick={sendData} variant="contained" color="primary" style={{ margin: '40px', width: '50%' }}>Send</Button>
+            <Button onClick={() =>  navigate("../milk")} variant="contained" color="primary" style={{marginLeft: '40px' }}>InsertMilk</Button>
           </div>
         </div>
         <div style={cowImageStyle}></div>

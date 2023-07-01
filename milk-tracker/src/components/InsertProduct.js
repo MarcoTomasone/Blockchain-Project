@@ -5,7 +5,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { getAccounts, addProduct, getAllMilk, getMilksOfOwner} from '../utils/web3access.mjs';
+import { getAccounts, addProduct, getAllMilk, getMilksOfOwner, getAllProductsFromContract} from '../utils/web3access.mjs';
 import product from '../img/products.jpg';
 
 export default function InsertProduct() {
@@ -56,6 +56,7 @@ export default function InsertProduct() {
 
   const sendData = () => {
     const data = {
+      milkId: milkId,
       dateOfProduction: document.getElementById("dateOfProduction").value,
       productsType: document.getElementById("productsType").value,
       expiryDate: document.getElementById("expiryDate").value,
@@ -71,13 +72,20 @@ export default function InsertProduct() {
     });
     
     if(allFieldsFilled) {
-      TextFieldIds.forEach((id) => {
-        document.getElementById(id).value = "";
-        document.getElementById(id).style.border = "2px solid blue";
-      });
-      console.log(data);  
-      addProduct(myAccount, data);
-    }
+        TextFieldIds.forEach((id) => {
+            document.getElementById(id).value = "";
+            document.getElementById(id).style.border = "2px solid blue";
+        });
+        console.log(data);  
+       
+        var result = addProduct(myAccount, data);
+        if (result) {
+            alert("Product added");
+        }
+        else {
+            alert("Error");
+        }
+    }  
     else 
       alert("Please fill all the fields");
   };

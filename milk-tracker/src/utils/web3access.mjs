@@ -18,8 +18,9 @@ function getAccounts() {
 function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
-            .send({ from: account, gas:3000000 });
+    MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
+            .send({ from: account, gas:3000000 }); 
+    return true; //TODO: change contract to return true false
 }
 
 function getAllCows(account){
@@ -29,15 +30,20 @@ function getAllCows(account){
 }
 
 function getCowsOfOwner(account) {
+    try {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     return MilkFactoryContract.methods.getCowsOfOwner()
             .call({ from: account, gas:3000000});
+    } catch (error) {
+        console.log("SONO IN ERRORE");    
+    }       
 }
 
 function addMilk(account, data) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addMilk(data.cowId, data.dateOfProduction)
+    MilkFactoryContract.methods.addMilk(data.cowId, data.dateOfProduction)
                 .send({ from: account, gas:3000000 });
+    return true; //TODO: change contract to return true false
 }
 
 function getAllMilk(account) {
@@ -58,19 +64,28 @@ function getMilksOfOwner(account) {
 }
 
 function addProduct(account, data) {
+    console.log("addProduct");
+    console.log(data);
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.addProduct(data.productId, data.milkId, data.dateOfProduction, data.productsType, data.expiryDate)
-                .send({ from: account });
+    MilkFactoryContract.methods.addProduct(data.milkId, data.dateOfProduction, data.productsType, data.expiryDate)
+                .send({ from: account, gas:3000000 });
+    return true; //TODO: change contract to return true false
+            }
+
+function getAllProductsFromContract(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkFactoryContract.methods.getAllProducts()
+                .call({ from: account, gas:3000000});
 }
 
 function insertFakeData(account) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    addCow(account, {cowWeight: 100, cowBreed: "Account1_Cow0", cowBirth: "2021-01-01", cowResidence: "Milano"});
-    addCow(account, {cowWeight: 200, cowBreed: "Account1_Cow1", cowBirth: "2021-01-01", cowResidence: "Manfredonia"});
+    addCow(account, {cowWeight: 100, cowBreed: "Acc1_Cow0", cowBirth: "2021-01-01", cowResidence: "Milano"});
+    addCow(account, {cowWeight: 200, cowBreed: "Acc1_Cow1", cowBirth: "2021-01-01", cowResidence: "Manfredonia"});
     addMilk(account, {cowId: 0, dateOfProduction: "Account1_Cow0_Milk0"});
     addMilk(account, {cowId: 1, dateOfProduction: "Account1_Cow1_Milk1"});
 }
 
-export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData};
+export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, getAllProductsFromContract};
 
 

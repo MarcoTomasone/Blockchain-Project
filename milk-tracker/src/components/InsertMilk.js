@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TextField from  '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -14,7 +14,7 @@ export default function InsertMilk() {
   const [cowList, setCowList] = useState([]);
   const [cowId, setCowId] = useState(null);
   const TextFieldIds = ["dateOfProduction"];
-  
+  const navigate = useNavigate();
   //Component Did Mount
   useEffect(() => {
     console.log(myAccount);
@@ -43,7 +43,7 @@ export default function InsertMilk() {
   
   const getCowsOfOwnerFromContract = async () => {
     console.log("getCowsOfOwnerFromContract");
-    console.log(myAccount);
+    console.log("ACCOUNT TO SEND: " + myAccount);
     const cowList = await getCowsOfOwner(myAccount);
     return cowList;
   };
@@ -74,7 +74,13 @@ export default function InsertMilk() {
         document.getElementById(id).style.border = "2px solid blue";
       });
       console.log(data);  
-      addMilk(myAccount, data);
+      var result = addMilk(myAccount, data);
+      if(result) {
+        alert("Data inserted correctly");
+      }
+        else {
+            alert("Error while inserting data");
+    }
     }
     else 
       alert("Please fill all the fields");
@@ -142,6 +148,8 @@ export default function InsertMilk() {
         <TextField id="dateOfProduction" label="Date of Production"  variant="filled" borderColor="blue" borderRadius={10} focused />
       </div>
       <Button onClick={sendData} variant="contained" color="primary">Send</Button>
+      <Button onClick={() =>  navigate("../products")} variant="contained" color="primary" style={{ margin : '10px'}}>InsertProducts</Button>
+
       </div>
       <div style={milkImageStyle}></div>
     </div>
