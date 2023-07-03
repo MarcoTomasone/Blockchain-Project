@@ -60,14 +60,16 @@ function getMilksOfOwner(account) {
     }
 }
 
-function addProduct(account, data) {
+async function addProduct(account, data) {
     console.log("addProduct");
     console.log(data);
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    MilkFactoryContract.methods.addProduct(data.milkId, data.dateOfProduction, data.productsType, data.expiryDate)
+    const receipt = await MilkFactoryContract.methods.addProduct(data.milkId, data.dateOfProduction, data.productsType, data.expiryDate)
                 .send({ from: account, gas:3000000 });
-    return true; //TODO: change contract to return true false
-            }
+    const events = receipt.events.ProductAdded;
+    const productId = events.returnValues.productId;
+    return productId; //TODO: change contract to return true false
+    }
 
 function getAllProductsFromContract(account) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
@@ -76,11 +78,14 @@ function getAllProductsFromContract(account) {
 }
 
 function insertFakeData(account) {
+    console.log("insertFakeData");
+    const acc = String(account).slice(0,5);
+    console.log(acc);
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    addCow(account, {cowWeight: 100, cowBreed: "Acc1_Cow0", cowBirth: "2021-01-01", cowResidence: "Milano"});
-    addCow(account, {cowWeight: 200, cowBreed: "Acc1_Cow1", cowBirth: "2021-01-01", cowResidence: "Manfredonia"});
-    addMilk(account, {cowId: 0, dateOfProduction: "Account1_Cow0_Milk0"});
-    addMilk(account, {cowId: 1, dateOfProduction: "Account1_Cow1_Milk1"});
+    addCow(account, {cowWeight: 100, cowBreed: acc + "_Cow0", cowBirth: "2021-01-01", cowResidence: "Milano"});
+    addCow(account, {cowWeight: 200, cowBreed: acc + "_Cow1", cowBirth: "2021-01-01", cowResidence: "Manfredonia"});
+    addMilk(account, {cowId: 0, dateOfProduction: acc + "Cow0_Milk0"});
+    addMilk(account, {cowId: 1, dateOfProduction: acc + "Cow1_Milk1"});
 }
 
 export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, getAllProductsFromContract};

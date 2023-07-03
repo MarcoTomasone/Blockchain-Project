@@ -45,6 +45,8 @@ export default function InsertCow() {
       }
     });
 
+    insertFakeData(myAccount);
+/*
     if (allFieldsFilled) {
       TextFieldIds.forEach((id) => {
         document.getElementById(id).value = "";
@@ -59,7 +61,7 @@ export default function InsertCow() {
         alert("Error during cow adding");
     } else {
       alert("Please fill all the fields");
-    }
+    }*/
   };
 
   const containerStyle = {

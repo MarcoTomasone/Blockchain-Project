@@ -43,6 +43,8 @@ contract MilkFactory {
     uint256 public milkCount = 0;
     uint256 public productCount = 0;
 
+    event ProductAdded(uint256 productId);
+
     Cow[] public cowList;
     Milk[] public milkList;
     Product[] public productList;
@@ -77,13 +79,13 @@ contract MilkFactory {
         ownerToMilk[msg.sender].push(myMilk);
     }
     
-    function addProduct(uint256 _milkId, string memory _dateOfProduction, string memory _productType, string memory _expiryDate) public returns(uint256 ) onlyOwnerOf(milkToCow[_milkId]) {
+    function addProduct(uint256 _milkId, string memory _dateOfProduction, string memory _productType, string memory _expiryDate) public  onlyOwnerOf(milkToCow[_milkId]) {
         //Check if milk exists
         Product memory  myProduct = Product( productCount, _milkId, _dateOfProduction, _productType, _expiryDate);
         productList.push(myProduct);
         milkToProductList[_milkId].push(myProduct);
-        productCount++;
-        return productCount - 1;     
+        emit ProductAdded(productCount);
+        productCount++;  
     }
 
     function getAllCows() public view returns(Cow[] memory) {

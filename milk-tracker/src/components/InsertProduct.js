@@ -5,13 +5,16 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { getAccounts, addProduct, getAllMilk, getMilksOfOwner, getAllProductsFromContract} from '../utils/web3access.mjs';
+import { getAccounts, addProduct, getAllMilk, getMilksOfOwner, getAllProductsFromContract, insertFakeData} from '../utils/web3access.mjs';
 import product from '../img/products.jpg';
+import QRCode from 'qrcode.react';
+
 
 export default function InsertProduct() {
   const [myAccount, setMyAccount] = useState(null);
   const [milkList, setMilkList] = useState([]);
   const [milkId, setMilkId] = useState(null);
+  const [qrCodeText, setQrCodeText] = useState(null);
   const TextFieldIds = ["dateOfProduction", "productsType", "expiryDate"];
   
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function InsertProduct() {
     console.log(event.target.value);
   };
 
-  const sendData = () => {
+  const sendData = async () => {
     const data = {
       milkId: milkId,
       dateOfProduction: document.getElementById("dateOfProduction").value,
@@ -76,13 +79,9 @@ export default function InsertProduct() {
         });
         console.log(data);  
        
-        var result = addProduct(myAccount, data);
-        if (result) {
-            alert("Product added");
-        }
-        else {
-            alert("Error");
-        }
+        var productId = await addProduct(myAccount, data);
+        console.log("productId: " + productId);
+        setQrCodeText(productId);
     }  
     else 
       alert("Please fill all the fields");
@@ -130,6 +129,8 @@ export default function InsertProduct() {
       <div style={formContainerStyle}>
       <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
+      <div id="qrcode"></div>
+      {qrCodeText != null ? <QRCode value = {qrCodeText.toString()}></QRCode> : null}
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Milk</InputLabel>
           <Select
