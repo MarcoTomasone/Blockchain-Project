@@ -21,7 +21,7 @@ const images = [
     imageUrl: milk,
     title: 'Client',
     width: '50%',
-    toUrl: '/milk', //TODO: Change to view section for clients
+    toUrl: '/view', //TODO: Change to view section for clients
     },
 ];
 

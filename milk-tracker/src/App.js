@@ -8,6 +8,7 @@ import InsertProduct from './components/InsertProduct';
 import LoginView from './components/LoginView';
 import React from 'react';
 import './App.css';
+import ViewView from "./components/ViewView";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route key="InsertCow" path="/Cow" element={<InsertCow />} />
           <Route key="InsertMilk" path="/Milk" element={<InsertMilk />} />
           <Route key="InsertProducts" path="/Products" element={<InsertProduct />} />
+          <Route key="ViewView" path="/View" element={<ViewView />} />
         </Routes>
       </Router>
   );

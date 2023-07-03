@@ -2,17 +2,14 @@ import Web3 from "web3";
 //import dotenv from 'dotenv';
 import { getContractABI, getContractAddress } from '../abi/abiHandler.js';
 
-//dotenv.config();
-
-//const web3 = new Web3(process.env.CHAIN_URL);
-const web3 = new Web3("http://127.0.0.1:7545");
+const web3 = new Web3( Web3.givenProvider || "http://127.0.0.1:7545");
 
 function getWeb3Context() {
     return web3;
 }
 
-function getAccounts() {
-    return getWeb3Context().eth.getAccounts();
+async function getAccounts() {
+    return await getWeb3Context().eth.requestAccounts();
 }
 
 function addCow(account, data){

@@ -10,43 +10,41 @@ import milk from '../img/milk1.jpg';
 import { getAccounts, addMilk, getAllCows, getCowsOfOwner} from '../utils/web3access.mjs';
 
 export default function InsertMilk() {
-  const [myAccount, setMyAccounts] = useState(null);
+  const [myAccount, setMyAccount] = useState(null);
   const [cowList, setCowList] = useState([]);
   const [cowId, setCowId] = useState(null);
   const TextFieldIds = ["dateOfProduction"];
   const navigate = useNavigate();
-  //Component Did Mount
-  useEffect(() => {
-    console.log(myAccount);
-    //TODO: why if defult account is account2 it sets account1?
-    getAccounts().then((accounts) => {
-      setMyAccounts(accounts[0]);
-      console.log(accounts[0]);
-    });
+    //Component Did Mount
+    useEffect(() => {
+        console.log("OPENING LOG: " + myAccount);
+        getAccounts().then((accounts) => {
+            console.log("GET: " + accounts);
+            console.log("ACCOUNT0: " + accounts[0]);
+            setMyAccount(accounts[0]);
+        });
+    }, []); // empty dependency array to run only once
+
+    useEffect(() => {
+        console.log("ACCOUNT CHANGED: " + myAccount);  
+        if (myAccount !== null) {
+            getCowsOfOwnerFromContract().then((cowList) => {
+            setCowList(cowList);
+            });
+        }
+    }, [myAccount]);
 
     window.ethereum.on('accountsChanged', function (accounts) {
-      setMyAccounts(accounts[0]);
-      console.log(accounts[0]);
+        console.log("ACCOUNTSSSSS: " + accounts);
+        setMyAccount(accounts[0]);
     });
-
-  }, []);
-
-//Component Did Update
-  useEffect(() => {
-    if (myAccount !== null) {
-      getCowsOfOwnerFromContract().then((cowList) => {
-        setCowList(cowList);
-      });
-    }
-  }, [myAccount]);
-
   
-  const getCowsOfOwnerFromContract = async () => {
-    console.log("getCowsOfOwnerFromContract");
-    console.log("ACCOUNT TO SEND: " + myAccount);
-    const cowList = await getCowsOfOwner(myAccount);
-    return cowList;
-  };
+    const getCowsOfOwnerFromContract = async () => {
+        console.log("getCowsOfOwnerFromContract");
+        console.log("ACCOUNT TO SEND: " + myAccount);
+        const cowList = await getCowsOfOwner(myAccount);
+        return cowList;
+    };
 
   const handleChange = (event) => {
     setCowId(event.target.value);

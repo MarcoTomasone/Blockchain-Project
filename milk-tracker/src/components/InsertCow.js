@@ -6,17 +6,17 @@ import cow from '../img/cow1.jpg';
 import { getAccounts, addCow, getAllCows, getCowsOfOwner, insertFakeData } from '../utils/web3access.mjs';
 
 export default function InsertCow() {
-  const [myAccount, setMyAccount] = useState(null);
+  const [myAccount, setMyAccount] = useState("0x000000000000000");
   const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
   const navigate = useNavigate()
 
     useEffect(() => {
-    console.log("OPENING LOG: " + myAccount);
-    getAccounts().then((accounts) => {
-        console.log("GET: " + accounts);
-        console.log("ACCOUNT0: " + accounts[0]);
-        setMyAccount(accounts[0]);
-    });
+        console.log("OPENING LOG: " + myAccount);
+        getAccounts().then((accounts) => {
+            console.log("GET: " + accounts);
+            console.log("ACCOUNT0: " + accounts[0]);
+            setMyAccount(accounts[0]);
+        });
     }, []); // empty dependency array to run only once
 
     useEffect(() => {
@@ -24,6 +24,7 @@ export default function InsertCow() {
     }, [myAccount]);
 
     window.ethereum.on('accountsChanged', function (accounts) {
+        console.log("ACCOUNTSSSSS: " + accounts);
         setMyAccount(accounts[0]);
     });
 
