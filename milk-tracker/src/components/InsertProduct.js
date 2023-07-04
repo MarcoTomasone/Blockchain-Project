@@ -129,8 +129,9 @@ export default function InsertProduct() {
       <div style={formContainerStyle}>
       <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
       <div style={{ marginBottom: '30px', width: '50%' }}>
-      <div id="qrcode"></div>
-      {qrCodeText != null ? <QRCode value = {qrCodeText.toString()}></QRCode> : null}
+      <div id="qrcode" style={{height: '140px', width: '140px', border: '3px solid blue', margin: '10px', padding: '15px' }}>
+        {qrCodeText != null ? <QRCode value = {qrCodeText.toString()} ></QRCode> : null}
+      </div>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Milk</InputLabel>
           <Select

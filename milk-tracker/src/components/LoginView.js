@@ -5,20 +5,20 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import cow from '../img/cow.png';
-import milk from '../img/milk.png';
+import dairy from '../img/dairy.jpg';
+import client from '../img/client.jpg';
 import { Alert } from '@mui/material';
 import AlertDialog from './AlertDialog';
 
 const images = [
     {
-    imageUrl: cow,
+    imageUrl: dairy,
     title: 'Dairy',
     width: '50%',
     toUrl: '/insert',
     },
     {
-    imageUrl: milk,
+    imageUrl: client,
     title: 'Client',
     width: '50%',
     toUrl: '/view', //TODO: Change to view section for clients

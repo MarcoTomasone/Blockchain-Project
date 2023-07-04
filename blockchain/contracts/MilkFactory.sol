@@ -120,4 +120,22 @@ contract MilkFactory {
         }
         revert("Product not found!"); //Undo, return value, give back gas 
     }
+
+    function getMilk(uint256 _milkId) public view returns(Milk memory) {
+        for(uint i=0; i < milkList.length; i++) { 
+            if(milkList[i].id == _milkId) {
+                return milkList[i];
+            }
+        }
+        revert("Milk not found!"); //Undo, return value, give back gas 
+    }
+
+    function getCow(uint256 _cowId) public view returns(Cow memory) {
+        for(uint i=0; i < cowList.length; i++) { 
+            if(cowList[i].id == _cowId) {
+                return cowList[i];
+            }
+        }
+        revert("Cow not found!"); //Undo, return value, give back gas 
+    }
 }

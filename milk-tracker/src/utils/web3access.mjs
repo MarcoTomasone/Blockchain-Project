@@ -77,6 +77,40 @@ function getAllProductsFromContract(account) {
                 .call({ from: account, gas:3000000});
 }
 
+async function loadProductInfoFromContract(productId) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    try {
+        const product = await MilkFactoryContract.methods.getProduct(productId).call();
+        return product;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+async function loadMilkInfoFromContract(milkId) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    try {
+        const milk = await MilkFactoryContract.methods.getMilk(milkId).call();
+        return milk;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+async function loadCowInfoFromContract(cowId) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    try {
+        const cow = await MilkFactoryContract.methods.getCow(cowId).call();
+        return cow;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+
 function insertFakeData(account) {
     console.log("insertFakeData");
     const acc = String(account).slice(0,5);
@@ -88,6 +122,8 @@ function insertFakeData(account) {
     addMilk(account, {cowId: 1, dateOfProduction: acc + "Cow1_Milk1"});
 }
 
-export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, getAllProductsFromContract};
+export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, 
+         getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData,
+         getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract};
 
 
