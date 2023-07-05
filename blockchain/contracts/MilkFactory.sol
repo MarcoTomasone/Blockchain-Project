@@ -58,7 +58,7 @@ contract MilkFactory {
     mapping(uint256 => Milk[]) public cowToMilkList;
     mapping(uint256 => Product[]) public milkToProductList;
     mapping(address => Milk[]) public ownerToMilk;
-    mapping(uint256 => bool) public spoiledProducts;
+    mapping(uint256 => bool) public spoiledMilks;
     //mapping(uint256 => uint256) public milkToCow;
     
 
@@ -74,8 +74,9 @@ contract MilkFactory {
     function addMilk(uint256 _cowId, string memory _dateOfProduction) public onlyOwnerOf(_cowId) {
         //Check if cow exists
         Milk memory myMilk = Milk(milkCount, _cowId, _dateOfProduction);
-        milkCount++;
+        spoiledMilks[milkCount] = false;
         milkList.push(myMilk);
+        milkCount++;
         cowToMilkList[_cowId].push(myMilk);
         milkToCow[myMilk.id] = _cowId;
         ownerMilkCount[msg.sender]++; 
@@ -87,7 +88,6 @@ contract MilkFactory {
         Product memory  myProduct = Product( productCount, _milkId, _dateOfProduction, _productType, _expiryDate);
         productList.push(myProduct);
         milkToProductList[_milkId].push(myProduct);
-        spoiledProducts[productCount] = false;
         emit ProductAdded(productCount);
         productCount++;  
     }
@@ -104,16 +104,13 @@ contract MilkFactory {
         return milkList;
     }
 
-
-    //TODO: Alternative to for is to create a mapping user->milk[] ?
     function getMilksOfOwner() public view returns (Milk[] memory) {
         return ownerToMilk[msg.sender];    
     }
 
     function reportSpoiledProduct(uint256 _productId) public {
-        string memory message = "Hello, world!";
-        emit LogMessage(message);
-        spoiledProducts[_productId] = true;
+        uint256 milkId = getProduct(_productId).milkId;
+        spoiledMilks[milkId] = true;
     }
 
     function getAllProducts() public view returns(Product[] memory) {
@@ -129,8 +126,8 @@ contract MilkFactory {
         revert("Product not found!"); //Undo, return value, give back gas 
     }
 
-    function isProductSpoiled(uint256 _productId) public view returns(bool) {
-        return spoiledProducts[_productId];
+    function isMilkSpoiled(uint256 _milkId) public view returns(bool) {
+        return spoiledMilks[_milkId];
     }
 
     function getMilk(uint256 _milkId) public view returns(Milk memory) {

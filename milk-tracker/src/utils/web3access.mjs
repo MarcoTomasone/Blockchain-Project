@@ -81,8 +81,7 @@ async function loadProductInfoFromContract(productId) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
         const product = await MilkFactoryContract.methods.getProduct(productId).call();
-        const productState = await MilkFactoryContract.methods.isProductSpoiled(productId).call();
-        return {product, productState};
+        return product;
     } catch (error) {
         console.error(error);
         throw error;
@@ -93,7 +92,8 @@ async function loadMilkInfoFromContract(milkId) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
         const milk = await MilkFactoryContract.methods.getMilk(milkId).call();
-        return milk;
+        const milkState = await MilkFactoryContract.methods.isMilkSpoiled(milkId).call();
+        return {milk, milkState};
     } catch (error) {
         console.error(error);
         throw error;

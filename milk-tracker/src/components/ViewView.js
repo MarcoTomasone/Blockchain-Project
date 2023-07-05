@@ -12,7 +12,7 @@ export default function ViewView() {
     const [productData, setProductData] = useState(null);
     const [milkData, setMilkData] = useState(null);
     const [cowData, setCowData] = useState(null);
-    const [isProductSpoiled, setIsProductSpoiled] = useState(false);
+    const [isMilkSpoiled, setIsMilkSpoiled] = useState(false);
     
     useEffect(() => {
         console.log("OPENING LOG: " + myAccount);
@@ -44,19 +44,19 @@ export default function ViewView() {
             console.log(productId);
             console.log("loadProductInfo");
             var data = await loadProductInfoFromContract(productId);
-            console.log(data.productState);
-            setIsProductSpoiled(data.productState);
-            setProductData(data.product);
+            console.log(data);
+            setProductData(data);
             loadMilkInfo(data.milkId);
-    };
-
+        };
+        
         const loadMilkInfo = async (milkId) => {
             console.log("loadMilkInfo");
             console.log(milkId);
             var data = await loadMilkInfoFromContract(milkId);
+            setIsMilkSpoiled(data.milkState);
             console.log(data);
-            setMilkData(data);
-            loadCowInfo(data.cowId);
+            setMilkData(data.milk);
+            loadCowInfo(data.milk.cowId);
         };
 
         const loadCowInfo = async (cowId) => {
@@ -67,15 +67,16 @@ export default function ViewView() {
             setCowData(data);
         };
 
-
         return (
             <div>
-              {isProductSpoiled ? 
+                {isMilkSpoiled ? 
                     <Alert variant="filled" severity="warning">
                         This is a warning alert — Your product may be spoiled! 
-                    </Alert> : null}
+                        Be Careful before consuming it!
+                    </Alert> 
+                    : null
+                }
               <FormDialog onClose={handleDialogClose} />
-              <h1>{productId}</h1>
               <Grid container spacing={2}>
                 {/* Colonna della mucca */}
                 <Grid item xs={12} sm={4}>
@@ -204,11 +205,8 @@ export default function ViewView() {
               </Grid>
             <div>
                 <p>Do you want to report that your product is not suitable for consumption?
-                <Button variant="contained" color="primary" onClick={() => reportSpoiledProduct(myAccount, productId)}>
-                    Yes
-                </Button>
-                <Button variant="contained" color="secondary" onClick={() => {}}>
-                    No
+                <Button variant="contained" color="primary" onClick={() => reportSpoiledProduct(myAccount, milkData.id)}>
+                    Report
                 </Button>
                 </p>
             </div>
