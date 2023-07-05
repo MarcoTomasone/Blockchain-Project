@@ -44,7 +44,9 @@ contract MilkFactory {
     uint256 public productCount = 0;
 
     event ProductAdded(uint256 productId);
-
+    event SpoiledProduct(uint256 productId);
+    event LogMessage(string message);
+    
     Cow[] public cowList;
     Milk[] public milkList;
     Product[] public productList;
@@ -56,8 +58,9 @@ contract MilkFactory {
     mapping(uint256 => Milk[]) public cowToMilkList;
     mapping(uint256 => Product[]) public milkToProductList;
     mapping(address => Milk[]) public ownerToMilk;
+    mapping(uint256 => bool) public spoiledProducts;
     //mapping(uint256 => uint256) public milkToCow;
-
+    
 
     function addCow(uint256 _weight, string memory _breed, string memory _birthDate, string memory _residence) public {
         Cow memory myCow = Cow(cowCount, _weight, _breed, _birthDate, _residence);
@@ -84,6 +87,7 @@ contract MilkFactory {
         Product memory  myProduct = Product( productCount, _milkId, _dateOfProduction, _productType, _expiryDate);
         productList.push(myProduct);
         milkToProductList[_milkId].push(myProduct);
+        spoiledProducts[productCount] = false;
         emit ProductAdded(productCount);
         productCount++;  
     }
@@ -106,7 +110,11 @@ contract MilkFactory {
         return ownerToMilk[msg.sender];    
     }
 
-    
+    function reportSpoiledProduct(uint256 _productId) public {
+        string memory message = "Hello, world!";
+        emit LogMessage(message);
+        spoiledProducts[_productId] = true;
+    }
 
     function getAllProducts() public view returns(Product[] memory) {
         return productList;
@@ -119,6 +127,10 @@ contract MilkFactory {
             }
         }
         revert("Product not found!"); //Undo, return value, give back gas 
+    }
+
+    function isProductSpoiled(uint256 _productId) public view returns(bool) {
+        return spoiledProducts[_productId];
     }
 
     function getMilk(uint256 _milkId) public view returns(Milk memory) {

@@ -3,28 +3,50 @@ import FormDialog from "./FormDialog";
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract } from "../utils/web3access.mjs";
+import Alert from '@mui/material/Alert';
+import { getAccounts, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct } from "../utils/web3access.mjs";
 
 export default function ViewView() {
-    const [dialogValue, setDialogValue] = useState("");
+    const [myAccount, setMyAccount] = useState("0x000000000000000");
+    const [productId, setProductId] = useState("");
     const [productData, setProductData] = useState(null);
     const [milkData, setMilkData] = useState(null);
     const [cowData, setCowData] = useState(null);
+    const [isProductSpoiled, setIsProductSpoiled] = useState(false);
+    
+    useEffect(() => {
+        console.log("OPENING LOG: " + myAccount);
+        getAccounts().then((accounts) => {
+            console.log("GET: " + accounts);
+            console.log("ACCOUNT0: " + accounts[0]);
+            setMyAccount(accounts[0]);
+        });
+    }, []); // empty dependency array to run only once
+
+    useEffect(() => {
+        console.log("ACCOUNT CHANGED: " + myAccount);  
+    }, [myAccount]);
+
+    window.ethereum.on('accountsChanged', function (accounts) {
+        console.log("ACCOUNTSSSSS: " + accounts);
+        setMyAccount(accounts[0]);
+    });
 
     useEffect(() => {
         loadProductInfo();
-    }, [dialogValue]);
+    }, [productId]);
 
     const handleDialogClose = (value) => {
-        setDialogValue(value);
+        setProductId(value);
     };
 
     const loadProductInfo = async () => {
-            console.log(dialogValue);
+            console.log(productId);
             console.log("loadProductInfo");
-            var data = await loadProductInfoFromContract(dialogValue);
-            console.log(data);
-            setProductData(data);
+            var data = await loadProductInfoFromContract(productId);
+            console.log(data.productState);
+            setIsProductSpoiled(data.productState);
+            setProductData(data.product);
             loadMilkInfo(data.milkId);
     };
 
@@ -48,8 +70,12 @@ export default function ViewView() {
 
         return (
             <div>
+              {isProductSpoiled ? 
+                    <Alert variant="filled" severity="warning">
+                        This is a warning alert — Your product may be spoiled! 
+                    </Alert> : null}
               <FormDialog onClose={handleDialogClose} />
-              <h1>{dialogValue}</h1>
+              <h1>{productId}</h1>
               <Grid container spacing={2}>
                 {/* Colonna della mucca */}
                 <Grid item xs={12} sm={4}>
@@ -178,10 +204,10 @@ export default function ViewView() {
               </Grid>
             <div>
                 <p>Do you want to report that your product is not suitable for consumption?
-                <Button variant="contained" color="red" onClick={() => {}}>
+                <Button variant="contained" color="primary" onClick={() => reportSpoiledProduct(myAccount, productId)}>
                     Yes
                 </Button>
-                <Button variant="contained" color="green" onClick={() => {}}>
+                <Button variant="contained" color="secondary" onClick={() => {}}>
                     No
                 </Button>
                 </p>

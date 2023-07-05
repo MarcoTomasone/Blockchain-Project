@@ -81,7 +81,8 @@ async function loadProductInfoFromContract(productId) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
         const product = await MilkFactoryContract.methods.getProduct(productId).call();
-        return product;
+        const productState = await MilkFactoryContract.methods.isProductSpoiled(productId).call();
+        return {product, productState};
     } catch (error) {
         console.error(error);
         throw error;
@@ -110,12 +111,20 @@ async function loadCowInfoFromContract(cowId) {
     }
 }
 
+async function reportSpoiledProduct(account, productId) {
+    console.log("I'm reporting for product: " + productId);
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress()); 
+    const receipt =  await MilkFactoryContract.methods.reportSpoiledProduct(productId)
+        .send( { from: account, gas:3000000 });
+    console.log(receipt);
+    const events = receipt.events.LogMessage;
+    console.log(events);
+}
 
 function insertFakeData(account) {
     console.log("insertFakeData");
     const acc = String(account).slice(0,5);
     console.log(acc);
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     addCow(account, {cowWeight: 100, cowBreed: acc + "_Cow0", cowBirth: "2021-01-01", cowResidence: "Milano"});
     addCow(account, {cowWeight: 200, cowBreed: acc + "_Cow1", cowBirth: "2021-01-01", cowResidence: "Manfredonia"});
     addMilk(account, {cowId: 0, dateOfProduction: acc + "Cow0_Milk0"});
@@ -124,6 +133,6 @@ function insertFakeData(account) {
 
 export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, 
          getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData,
-         getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract};
+         getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct};
 
 
