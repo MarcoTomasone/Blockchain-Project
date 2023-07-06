@@ -74,31 +74,34 @@ export default function ViewView() {
         };
 
         return (
+          <div>
+            {isMilkSpoiled ? 
+              <Alert variant="filled" severity="warning">
+                This is a warning alert — Your product may be spoiled! 
+                Be careful before consuming it!
+              </Alert> 
+              : null
+            }
             <div>
-                {isMilkSpoiled ? 
-                    <Alert variant="filled" severity="warning">
-                        This is a warning alert — Your product may be spoiled! 
-                        Be Careful before consuming it!
-                    </Alert> 
-                    : null
-                }
-                <p>
-                <Grid container alignItems="center">
-                    <Grid item>
-                   <h2 style={{marginRight: '10px'}}>
-                        Check here info about your product
-                    </h2>
-                    </Grid>
-                    <Grid item>
-                    <SearchIcon onClick={handleDialogOpen} />
-                    </Grid>
-                </Grid>
-                </p>
-              <FormDialog onClose={handleDialogClose} />
-              <Grid container spacing={2}>
-                {/* Colonna della mucca */}
-                <Grid item xs={12} sm={4}>
-                  <h2>Cow</h2>
+              <p>
+                <h2 style={{ marginRight: '10px', color: 'blue' }}>
+                  Check here info about your product
+                  <SearchIcon onClick={handleDialogOpen} />
+                </h2>
+                <FormDialog onClose={handleDialogClose} />
+              </p>
+              <p>
+                Do you want to report that your product is not suitable for consumption?
+                <Button variant="contained" color="primary" style={{ margin: "10px" }} onClick={() => reportSpoiledProduct(myAccount, milkData.id)}>
+                  Report
+                </Button>
+              </p>
+            </div>
+            <Grid container spacing={1}>
+              {/* Colonna della mucca */}
+              <Grid item xs={12} sm={4} style={{ backgroundColor: 'lightsteelblue', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '2px solid white', borderRadius: '10px', marginLeft: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <h2 style={{ color: 'blue' }}>Cow</h2>
                   <div style={{ marginBottom: '30px' }}>
                     <TextField
                       id="cowId"
@@ -108,6 +111,7 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={cowData ? cowData.id : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
                   <div style={{ marginBottom: '30px' }}>
@@ -119,6 +123,7 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={cowData ? cowData.weight : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
                   <div style={{ marginBottom: '30px' }}>
@@ -130,6 +135,7 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={cowData ? cowData.breed : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
                   <div style={{ marginBottom: '30px' }}>
@@ -141,6 +147,7 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={cowData ? cowData.birthDate : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
                   <div style={{ marginBottom: '30px' }}>
@@ -152,13 +159,16 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={cowData ? cowData.residence : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
-                </Grid>
+                </div>
+              </Grid>
         
-                {/* Colonna del latte */}
-                <Grid item xs={12} sm={4}>
-                  <h2>Milk</h2>
+              {/* Colonna del latte */}
+              <Grid item xs={12} sm={4} style={{ backgroundColor: 'lightcyan', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '2px solid white', borderRadius: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <h2 style={{ color: 'blue' }}>Milk</h2>
                   <div style={{ marginBottom: '30px' }}>
                     <TextField
                       id="milkId"
@@ -168,6 +178,7 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={milkData ? milkData.id : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
                   <div style={{ marginBottom: '30px' }}>
@@ -179,55 +190,56 @@ export default function ViewView() {
                       borderRadius={10}
                       focused
                       value={milkData ? milkData.dateOfProduction : ""}
+                      style={{ backgroundColor: 'white' }}
                     />
                   </div>
-                </Grid>
-        
-                {/* Colonna del prodotto */}
-                <Grid item xs={12} sm={4}>
-                  <h2>Product</h2>
-                  <div style={{ marginBottom: '30px' }}>
-                    <TextField
-                      id="dateOfProduction"
-                      label="Date of production"
-                      variant="filled"
-                      borderColor="blue"
-                      borderRadius={10}
-                      focused
-                      value={productData ? productData.dateOfProduction : ""}
-                    />
-                  </div>
-                  <div style={{ marginBottom: '30px' }}>
-                    <TextField
-                      id="productsType"
-                      label="Products type"
-                      variant="filled"
-                      borderColor="blue"
-                      borderRadius={10}
-                      focused
-                      value={productData ? productData.productType : ""}
-                    />
-                  </div>
-                  <div style={{ marginBottom: '30px' }}>
-                    <TextField
-                      id="expiryDate"
-                      label="Expiry date"
-                      variant="filled"
-                      borderColor="blue"
-                      borderRadius={10}
-                      focused
-                      value={productData ? productData.expiryDate : ""}
-                    />
-                  </div>
-                </Grid>
+                </div>
               </Grid>
-            <div>
-                <p>Do you want to report that your product is not suitable for consumption?
-                <Button variant="contained" color="primary" onClick={() => reportSpoiledProduct(myAccount, milkData.id)}>
-                    Report
-                </Button>
-                </p>
-            </div>
-            </div>
-          );
-        }
+        
+              {/* Colonna del prodotto */}
+              <Grid item xs={12} sm={3.9} style={{ backgroundColor: 'lightblue', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '2px solid white', borderRadius: '10px' }}>
+                <h2 style={{ color: 'blue' }}>Product</h2>
+                <div style={{ marginBottom: '30px' }}>
+                  <TextField
+                    id="dateOfProduction"
+                    label="Date of production"
+                    variant="filled"
+                    borderColor="blue"
+                    borderRadius={10}
+                    focused
+                    value={productData ? productData.dateOfProduction : ""}
+                    style={{ backgroundColor: 'white' }}
+                  />
+                </div>
+                <div style={{ marginBottom: '30px' }}>
+                  <TextField
+                    id="productsType"
+                    label="Products type"
+                    variant="filled"
+                    borderColor="blue"
+                    borderRadius={10}
+                    focused
+                    value={productData ? productData.productType : ""}
+                    style={{ backgroundColor: 'white' }}
+                  />
+                </div>
+                <div style={{ marginBottom: '30px' }}>
+                  <TextField
+                    id="expiryDate"
+                    label="Expiry date"
+                    variant="filled"
+                    borderColor="blue"
+                    borderRadius={10}
+                    focused
+                    value={productData ? productData.expiryDate : ""}
+                    style={{ backgroundColor: 'white' }}
+                  />
+                </div>
+              </Grid>
+            </Grid>
+          </div>
+        );
+        
+        
+        
+}
