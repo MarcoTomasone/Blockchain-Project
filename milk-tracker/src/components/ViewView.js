@@ -15,6 +15,9 @@ export default function ViewView() {
     const [milkData, setMilkData] = useState(null);
     const [cowData, setCowData] = useState(null);
     const [isMilkSpoiled, setIsMilkSpoiled] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(true); 
+    const [isCodeInvalid, setIsCodeInvalid] = useState(false);
+    const [isCode, setIsCode] = useState(false);
     
     useEffect(() => {
         console.log("OPENING LOG: " + myAccount);
@@ -39,20 +42,26 @@ export default function ViewView() {
     }, [productId]);
 
     const handleDialogOpen = () => {
-        
+      setDialogOpen(true);
     }
 
     const handleDialogClose = (value) => {
         setProductId(value);
+        setDialogOpen(false);
     };
 
     const loadProductInfo = async () => {
+      try{
             console.log(productId);
             console.log("loadProductInfo");
             var data = await loadProductInfoFromContract(productId);
             console.log(data);
             setProductData(data);
             loadMilkInfo(data.milkId);
+            setIsCodeInvalid(false);
+      } catch {
+            setIsCodeInvalid(true);
+      }
         };
         
         const loadMilkInfo = async (milkId) => {
@@ -82,13 +91,21 @@ export default function ViewView() {
               </Alert> 
               : null
             }
+
+            {isCodeInvalid ?
+              <Alert variant="filled" severity="error">
+              Product code does not exist!!!
+            </Alert> 
+            : null
+            }
+
             <div>
               <p>
-                <h2 style={{ marginRight: '10px', color: 'blue' }}>
+                <h2 style={{ marginRight: '10px', color: 'black' }}>
                   Check here info about your product
-                  <SearchIcon onClick={handleDialogOpen} />
+                  <SearchIcon style={{ marginLeft: '20px' ,  fontSize: '50px', color: "blue"}} onClick={handleDialogOpen} />
                 </h2>
-                <FormDialog onClose={handleDialogClose} />
+                <FormDialog open={dialogOpen} onClose={handleDialogClose} />
               </p>
               <p>
                 Do you want to report that your product is not suitable for consumption?

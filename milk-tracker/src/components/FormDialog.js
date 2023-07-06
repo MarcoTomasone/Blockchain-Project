@@ -8,8 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function FormDialog({onClose}) {
-  const [open, setOpen] = React.useState(true);
+export default function FormDialog({open, onClose}) {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -18,7 +17,7 @@ export default function FormDialog({onClose}) {
 
 
   const handleClose = () => {
-    setOpen(false);
+    setInputValue(""); // Resetta il valore di input
     onClose(inputValue);
   };
 
