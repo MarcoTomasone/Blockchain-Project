@@ -12,7 +12,7 @@ async function getAccounts() {
     return await getWeb3Context().eth.requestAccounts();
 }
 
-function addCow(account, data){
+async function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)

@@ -3,59 +3,79 @@ import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/cow1.jpg';
+import InputAdornment from '@mui/material/InputAdornment';
 import { getAccounts, addCow, getAllCows, getCowsOfOwner, insertFakeData } from '../utils/web3access.mjs';
 
 export default function InsertCow() {
-  const [myAccount, setMyAccount] = useState("0x000000000000000");
-  const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
-  const navigate = useNavigate()
+    const [myAccount, setMyAccount] = useState("0x000000000000000");
+    const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
+    const navigate = useNavigate()
 
+    useEffect(() => {
+        console.log("OPENING LOG: " + myAccount);
+        getAccounts().then((accounts) => {
+            console.log("GET: " + accounts);
+            console.log("ACCOUNT0: " + accounts[0]);
+            setMyAccount(accounts[0]);
+        });
+    }, []); // empty dependency array to run only once
 
-    const sendData = () => {
-    const data = {
-        cowBreed: document.getElementById("cowBreed").value,
-        cowBirth: document.getElementById("cowBirth").value,
-        cowResidence: document.getElementById("cowResidence").value,
-        cowWeight: document.getElementById("cowWeight").value,
-    };
-    let allFieldsFilled = true;
+    useEffect(() => {
+        console.log("ACCOUNT CHANGED: " + myAccount);  
+    }, [myAccount]);
 
-    TextFieldIds.forEach((id) => {
-      if (data[id] === "") {
-        allFieldsFilled = false;
-        document.getElementById(id).style.border = "2px solid red";
-        document.getElementById(id).style.color = "red";
-      }
+    window.ethereum.on('accountsChanged', function (accounts) {
+        console.log("ACCOUNTSSSSS: " + accounts);
+        setMyAccount(accounts[0]);
     });
 
-    insertFakeData(myAccount);
-/*
-    if (allFieldsFilled) {
-      TextFieldIds.forEach((id) => {
-        document.getElementById(id).value = "";
-        document.getElementById(id).style.border = "2px solid blue";
-      });
-      console.log(data);
-      console.log(myAccount);
-      var result = addCow(myAccount, data);
-      if(result) 
-        alert("Cow added successfully");
-      else
-        alert("Error during cow adding");
-    } else {
-      alert("Please fill all the fields");
-    }*/
-  };
+    const sendData = async (event) => {
+        event.preventDefault();
+        const data = {
+            cowBreed: document.getElementById("cowBreed").value,
+            cowBirth: document.getElementById("cowBirth").value,
+            cowResidence: document.getElementById("cowResidence").value,
+            cowWeight: document.getElementById("cowWeight").value,
+        };
+        let allFieldsFilled = true;
 
-  const containerStyle = {
+        TextFieldIds.forEach((id) => {
+            if (data[id] === "") {
+            allFieldsFilled = false;
+            document.getElementById(id).style.border = "2px solid red";
+            document.getElementById(id).style.color = "red";
+            }
+        });
+
+        //insertFakeData(myAccount);
+        
+        if (allFieldsFilled) {
+            try {
+                console.log(data);
+                console.log(myAccount);
+                await addCow(myAccount, data);
+                TextFieldIds.forEach((id) => {
+                  document.getElementById(id).value = "";
+                  document.getElementById(id).style.border = "2px solid blue";
+                });
+                console.log("Transazione confermata su MetaMask");
+              } catch (error) {
+                console.log("Errore durante l'invio dei dati:", error);
+              }
+        } else {
+            alert("Please fill all the fields");
+        }
+    };
+
+    const containerStyle = {
     overflow: 'hidden',
     margin: 0,
     padding: 0,
     width: '100%',
     height: '100%',
-  };
+    };
 
-  const formContainerStyle = {
+    const formContainerStyle = {
     position: 'absolute',
     top: '16%',
     right: '40px',
@@ -67,9 +87,9 @@ export default function InsertCow() {
     justifyContent: 'center',
     padding: '2vh',
     backgroundColor: 'white', // Aggiunge uno sfondo di colore rosso
-  };
+    };
 
-  const cowImageStyle = {
+    const cowImageStyle = {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -81,7 +101,7 @@ export default function InsertCow() {
     backgroundPosition: 'right',
     opacity: 0.99,
     zIndex: -1,
-  };
+    };
 
   return (
     <div style={containerStyle}>
@@ -97,7 +117,21 @@ export default function InsertCow() {
             <TextField style={{ width: '100%' }} id="cowResidence" label="Cow Residence" variant="filled" bordercolor="blue" borderradius={10} focused />
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
-            <TextField style={{ width: '100%' }} id="cowWeight" label="Cow Weight" variant="filled" bordercolor="blue" borderradius={10} focused />
+            <TextField 
+                style={{ width: '100%' }} id="cowWeight" 
+                type="number"
+                InputProps={{
+                    startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                    inputProps: {
+                    pattern: '[0-9]*', // Esprime la validazione per accettare solo valori numerici
+                    },
+                }}        
+                label="Cow Weight" 
+                variant="filled" 
+                bordercolor="blue" 
+                borderradius={10} 
+                focused 
+                />
             <Button onClick={sendData} variant="contained" color="primary" style={{ margin: '40px', marginLeft: '55px', width: '50%' }}>Send</Button>
             <Button onClick={() =>  navigate("../milk")} variant="contained" color="primary" style={{marginLeft: '53px' }}>InsertMilk</Button>
           </div>

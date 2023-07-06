@@ -10,11 +10,12 @@ import milk from '../img/milk1.jpg';
 import { getAccounts, addMilk, getAllCows, getCowsOfOwner} from '../utils/web3access.mjs';
 
 export default function InsertMilk() {
-  const [myAccount, setMyAccount] = useState(null);
-  const [cowList, setCowList] = useState([]);
-  const [cowId, setCowId] = useState(null);
-  const TextFieldIds = ["dateOfProduction"];
-  const navigate = useNavigate();
+    const [myAccount, setMyAccount] = useState(null);
+    const [cowList, setCowList] = useState([]);
+    const [cowId, setCowId] = useState(null);
+    const TextFieldIds = ["dateOfProduction"];
+    const navigate = useNavigate();
+    
     //Component Did Mount
     useEffect(() => {
         console.log("OPENING LOG: " + myAccount);
@@ -94,7 +95,6 @@ export default function InsertMilk() {
 
   const milkImageStyle = {
     position: 'absolute',
-    //top: '10%',
     right: 0,
     width: '100%',
     height: '91vh',
