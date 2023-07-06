@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import dairy from '../img/dairy.jpg';
 import client from '../img/client.jpg';
-import { Alert } from '@mui/material';
 import AlertDialog from './AlertDialog';
 
 const images = [
@@ -27,7 +26,7 @@ const images = [
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
     position: 'relative',
-    height: 600,
+    height: '100vh',
     [theme.breakpoints.down('sm')]: {
     width: '100% !important', // Overrides inline-style
     height: 600,
@@ -96,10 +95,7 @@ function LoginView() {
     const isConsoleActive = true;
     // Variable to navigate to another page.
     const navigator = useNavigate();
-    // Variable to set the popup modal (show, title and body).            
-    const [title, setTitle] = useState("Titolo del popup");
-    const [body, setBody] = useState("Corpo del popup");
-
+  
     // Function to connect to MetaMask.
     async function login(toUrl) {
         if (isConsoleActive) console.log("Verifica presenza di MetaMask");

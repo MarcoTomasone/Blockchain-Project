@@ -4,7 +4,9 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import SearchIcon from '@mui/icons-material/Search';
 import { getAccounts, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct } from "../utils/web3access.mjs";
+import AlertDialog from "./AlertDialog";
 
 export default function ViewView() {
     const [myAccount, setMyAccount] = useState("0x000000000000000");
@@ -35,6 +37,10 @@ export default function ViewView() {
     useEffect(() => {
         loadProductInfo();
     }, [productId]);
+
+    const handleDialogOpen = () => {
+        
+    }
 
     const handleDialogClose = (value) => {
         setProductId(value);
@@ -76,6 +82,18 @@ export default function ViewView() {
                     </Alert> 
                     : null
                 }
+                <p>
+                <Grid container alignItems="center">
+                    <Grid item>
+                   <h2 style={{marginRight: '10px'}}>
+                        Check here info about your product
+                    </h2>
+                    </Grid>
+                    <Grid item>
+                    <SearchIcon onClick={handleDialogOpen} />
+                    </Grid>
+                </Grid>
+                </p>
               <FormDialog onClose={handleDialogClose} />
               <Grid container spacing={2}>
                 {/* Colonna della mucca */}
