@@ -97,10 +97,9 @@ export default function InsertProduct() {
 
   const productImageStyle = {
     position: 'absolute',
-    top: '10%',
     right: 0,
     width: '100%',
-    height: '90%',
+    height: '91vh',
     backgroundImage: `url(${product})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
@@ -123,44 +122,54 @@ export default function InsertProduct() {
     backgroundColor: 'white', // Aggiunge uno sfondo di colore rosso
   };
 
+  const qrCodeContainer = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '140px',
+    width: '140px',
+    border: '3px solid blue',
+    margin: '10px',
+    padding: '15px',
+  };
+  
 
   return (
     <div style={containerStyle}>
       <div style={formContainerStyle}>
-      <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-      <div id="qrcode" style={{height: '140px', width: '140px', border: '3px solid blue', margin: '10px', padding: '15px' }}>
-        {qrCodeText != null ? <QRCode value = {qrCodeText.toString()} ></QRCode> : null}
+            <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
+            <div id="qrcode" style={qrCodeContainer}>
+                {qrCodeText != null ? (
+                    <QRCode value={qrCodeText.toString()} />
+                ) : null}
+            </div>
+            {qrCodeText != null ? (
+                    <p style={{marginTop: '-5px'}}> Hai inserito il prodotto: {qrCodeText.toString()} </p>
+                ) : null}
+                <FormControl style={{width: '48%'}}>
+                <InputLabel id="demo-simple-select-label">Milk</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={milkId}
+                    label="Milk"
+                    onChange={handleChange}
+                    
+                >
+                    {milkList.map((milk) => (
+                    <MenuItem key={milk.id} value={milk.id}>
+                        MilkID: {milk.id} CowID: {milk.cowId} Date Of Production: {milk.dateOfProduction} 
+                    </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+                <TextField id="dateOfProduction" label="Date of production"  variant="filled" style={{ marginTop: '10px' }}  borderColor="blue" borderRadius={10} focused />
+                <TextField id="productsType" label="Products type"  variant="filled" style={{ marginTop: '10px' }}  borderColor="blue" borderRadius={10} focused />
+                <TextField id="expiryDate" label="Expiry date"  variant="filled" style={{ marginTop: '10px' }}  borderColor="blue" borderRadius={10} focused />
+            <Button onClick={sendData} style={{ marginTop: '10px' }} variant="contained" color="primary">Send</Button>
       </div>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Milk</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={milkId}
-            label="Milk"
-            onChange={handleChange}
-          >
-            {milkList.map((milk) => (
-              <MenuItem key={milk.id} value={milk.id}>
-                MilkID: {milk.id} CowID: {milk.cowId} Date Of Production: {milk.dateOfProduction} 
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="dateOfProduction" label="Date of production"  variant="filled" borderColor="blue" borderRadius={10} focused />
-      </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="productsType" label="Products type"  variant="filled" borderColor="blue" borderRadius={10} focused />
-      </div>
-      <div style={{ marginBottom: '30px', width: '50%' }}>
-        <TextField id="expiryDate" label="Expiry date"  variant="filled" borderColor="blue" borderRadius={10} focused />
-      </div>
-      <Button onClick={sendData} variant="contained" color="primary">Send</Button>
-      </div>
-      <div style={productImageStyle}></div>
+      <div style={productImageStyle}/>
     </div>
   );
 }

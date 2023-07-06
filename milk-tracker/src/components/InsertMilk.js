@@ -94,10 +94,10 @@ export default function InsertMilk() {
 
   const milkImageStyle = {
     position: 'absolute',
-    top: '10%',
+    //top: '10%',
     right: 0,
     width: '100%',
-    height: '90%',
+    height: '91vh',
     backgroundImage: `url(${milk})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',

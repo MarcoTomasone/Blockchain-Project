@@ -10,23 +10,6 @@ export default function InsertCow() {
   const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
   const navigate = useNavigate()
 
-    useEffect(() => {
-        console.log("OPENING LOG: " + myAccount);
-        getAccounts().then((accounts) => {
-            console.log("GET: " + accounts);
-            console.log("ACCOUNT0: " + accounts[0]);
-            setMyAccount(accounts[0]);
-        });
-    }, []); // empty dependency array to run only once
-
-    useEffect(() => {
-        console.log("ACCOUNT CHANGED: " + myAccount);  
-    }, [myAccount]);
-
-    window.ethereum.on('accountsChanged', function (accounts) {
-        console.log("ACCOUNTSSSSS: " + accounts);
-        setMyAccount(accounts[0]);
-    });
 
     const sendData = () => {
     const data = {
@@ -115,8 +98,8 @@ export default function InsertCow() {
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
             <TextField style={{ width: '100%' }} id="cowWeight" label="Cow Weight" variant="filled" bordercolor="blue" borderradius={10} focused />
-            <Button onClick={sendData} variant="contained" color="primary" style={{ margin: '40px', width: '50%' }}>Send</Button>
-            <Button onClick={() =>  navigate("../milk")} variant="contained" color="primary" style={{marginLeft: '40px' }}>InsertMilk</Button>
+            <Button onClick={sendData} variant="contained" color="primary" style={{ margin: '40px', marginLeft: '55px', width: '50%' }}>Send</Button>
+            <Button onClick={() =>  navigate("../milk")} variant="contained" color="primary" style={{marginLeft: '53px' }}>InsertMilk</Button>
           </div>
         </div>
         <div style={cowImageStyle}></div>

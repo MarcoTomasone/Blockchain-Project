@@ -4,9 +4,9 @@ import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import cow from '../img/cow.png';
+import cow from '../img/cow2.jpg';
 import milk from '../img/milk.png';
-import products from '../img/products.jpg';
+import products from '../img/products2.jpg';
 
 
 
@@ -33,7 +33,7 @@ const images = [
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
     position: 'relative',
-    height: 600,
+    height: '91vh',
     [theme.breakpoints.down('sm')]: {
     width: '100% !important', // Overrides inline-style
     height: 600,
