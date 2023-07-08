@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function FormDialog({open, onClose}) {
+export default function FormDialog({open, onClose, onCancel}) {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -20,6 +20,11 @@ export default function FormDialog({open, onClose}) {
     setInputValue(""); // Resetta il valore di input
     onClose(inputValue);
   };
+
+  const handleCancel = () => {
+    setInputValue(""); // Resetta il valore di input
+    onCancel();
+    };
 
   return (
     <div>
@@ -44,7 +49,7 @@ export default function FormDialog({open, onClose}) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
           <Button onClick={handleClose}>Subscribe</Button>
         </DialogActions>
       </Dialog>
