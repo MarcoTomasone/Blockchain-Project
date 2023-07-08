@@ -10,20 +10,21 @@ import React from 'react';
 import './App.css';
 import ViewView from "./components/ViewView";
 
+
 function App() {
   return (
-    <Router>
-        <Navbar/>
-        <Routes>
-          <Route key="SplashScreen" path="/" element={<SplashScreen />} />
-          <Route key="LoginView" path="/Login" element={<LoginView />} />
-          <Route key="InsertView" path="/Insert" element={<InsertView />} />
-          <Route key="InsertCow" path="/Cow" element={<InsertCow />} />
-          <Route key="InsertMilk" path="/Milk" element={<InsertMilk />} />
-          <Route key="InsertProducts" path="/Products" element={<InsertProduct />} />
-          <Route key="ViewView" path="/View" element={<ViewView />} />
-        </Routes>
-      </Router>
+        <Router>
+            <Navbar/>
+            <Routes>
+            <Route key="SplashScreen" path="/" element={<SplashScreen />} />
+            <Route key="LoginView" path="/Login" element={<LoginView />} />
+            <Route key="InsertView" path="/Insert" element={<InsertView />} />
+            <Route key="InsertCow" path="/Cow" element={<InsertCow />} />
+            <Route key="InsertMilk" path="/Milk" element={<InsertMilk />} />
+            <Route key="InsertProducts" path="/Products" element={<InsertProduct />} />
+            <Route key="ViewView" path="/View" element={<ViewView />} />
+            </Routes>
+        </Router>
   );
 }
 

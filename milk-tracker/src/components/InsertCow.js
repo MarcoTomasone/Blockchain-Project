@@ -4,11 +4,16 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import cow from '../img/cow1.jpg';
 import InputAdornment from '@mui/material/InputAdornment';
+import { DateField } from '@mui/x-date-pickers/DateField';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs';
 import { getAccounts, addCow, getAllCows, getCowsOfOwner, insertFakeData } from '../utils/web3access.mjs';
 
 export default function InsertCow() {
     const [myAccount, setMyAccount] = useState("0x000000000000000");
     const TextFieldIds = ["cowBreed", "cowBirth", "cowResidence", "cowWeight"];
+    const [date, setDate] = React.useState(dayjs());
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -65,6 +70,39 @@ export default function InsertCow() {
         } else {
             alert("Please fill all the fields");
         }
+        /**
+        try {
+  console.log(data);
+  console.log(myAccount);
+  const transactionHash = await addCow(myAccount, data);
+
+  await new Promise((resolve, reject) => {
+    const checkConfirmation = async () => {
+      try {
+        const transactionReceipt = await web3.eth.getTransactionReceipt(transactionHash);
+        if (transactionReceipt) {
+          console.log("Transazione confermata su MetaMask");
+          resolve();
+        } else {
+          setTimeout(checkConfirmation, 1000);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    checkConfirmation();
+  });
+
+  TextFieldIds.forEach((id) => {
+    document.getElementById(id).value = "";
+    document.getElementById(id).style.border = "2px solid blue";
+  });
+} catch (error) {
+  console.log("Errore durante l'invio dei dati:", error);
+}
+
+         */
     };
 
     const containerStyle = {
@@ -111,7 +149,18 @@ export default function InsertCow() {
             <TextField style={{ width: '100%' }} id="cowBreed" label="Cow Breed" variant="filled" bordercolor="blue" borderradius={10} focused />
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
-            <TextField style={{ width: '100%' }} id="cowBirth" label="Cow Birth" variant="filled" bordercolor="blue" borderradius={10} focused />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateField
+                id="cowBirth"
+                label="Cow Birth"
+                value={date}
+                onChange={(newValue) => setDate(newValue)}
+                format="LL"
+                style={{ width: '100%' }}
+                variant='filled'
+                bordercolor="blue" borderradius={10} focused
+            />
+            </LocalizationProvider>
           </div>
           <div style={{ marginBottom: '30px', width: '50%' }}>
             <TextField style={{ width: '100%' }} id="cowResidence" label="Cow Residence" variant="filled" bordercolor="blue" borderradius={10} focused />

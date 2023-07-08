@@ -19,7 +19,30 @@ async function addCow(account, data){
             .send({ from: account, gas:3000000 }); 
     return true; //TODO: change contract to return true false
 }
+/*
+async function addCow(account, data) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const web3 = getWeb3Context();
+      const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+      
+      const transaction = MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
+        .send({ from: account, gas: 3000000 });
 
+      transaction.on("transactionHash", (transactionHash) => {
+        resolve(transactionHash);
+      });
+
+      transaction.on("error", (error) => {
+        reject(error);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+*/
 function getAllCows(account){
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     return MilkFactoryContract.methods.getAllCows()
