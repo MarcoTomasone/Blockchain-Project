@@ -52,7 +52,7 @@ function getAllCows(account){
 function getCowsOfOwner(account) {
     try {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.getCowsOfOwner()
+    return MilkFactoryContract.methods.getAliveCowsOfOwner()
             .call({ from: account, gas:3000000});
     } catch (error) {
         console.log("SONO IN ERRORE");    
@@ -144,6 +144,13 @@ async function reportSpoiledProduct(account, productId) {
     console.log(events);
 }
 
+async function killCowFromContract(account, cowId) {
+    console.log("I'm killing cow: " + cowId);
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    const receipt = await MilkFactoryContract.methods.killCow(cowId)
+        .send( { from: account, gas:3000000 });
+}
+
 function insertFakeData(account) {
     console.log("insertFakeData");
     const acc = String(account).slice(0,5);
@@ -155,7 +162,7 @@ function insertFakeData(account) {
 }
 
 export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, 
-         getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData,
+         getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, killCowFromContract,
          getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct};
 
 

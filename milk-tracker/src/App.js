@@ -9,6 +9,7 @@ import LoginView from './components/LoginView';
 import React from 'react';
 import './App.css';
 import ViewView from "./components/ViewView";
+import HandleAssets from "./components/HandleAssets";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route key="InsertMilk" path="/Milk" element={<InsertMilk />} />
             <Route key="InsertProducts" path="/Products" element={<InsertProduct />} />
             <Route key="ViewView" path="/View" element={<ViewView />} />
+            <Route key="HandleAssets" path="/handleAssets" element={<HandleAssets />} />
             </Routes>
         </Router>
   );

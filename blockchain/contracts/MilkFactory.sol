@@ -10,7 +10,7 @@ contract MilkFactory {
 
     struct Cow {
         uint256 id;
-        uint256 weight;
+        uint16 weight;
         string breed;
         string birthDate;
         string residence;
@@ -59,10 +59,12 @@ contract MilkFactory {
     mapping(uint256 => Product[]) public milkToProductList;
     mapping(address => Milk[]) public ownerToMilk;
     mapping(uint256 => bool) public spoiledMilks;
+    mapping(uint256 => bool) public deathCows;
+   
     //mapping(uint256 => uint256) public milkToCow;
     
 
-    function addCow(uint256 _weight, string memory _breed, string memory _birthDate, string memory _residence) public {
+    function addCow(uint16 _weight, string memory _breed, string memory _birthDate, string memory _residence) public {
         Cow memory myCow = Cow(cowCount, _weight, _breed, _birthDate, _residence);
         cowList.push(myCow);
         //Increase cow count that is used as id
@@ -92,12 +94,35 @@ contract MilkFactory {
         productCount++;  
     }
 
+    function killCow(uint256 _cowId) public onlyOwnerOf(_cowId) {
+        deathCows[_cowId] = true;
+    }
+
     function getAllCows() public view returns(Cow[] memory) {
         return cowList;
     }
 
     function getCowsOfOwner() public view returns(Cow[] memory) {
         return ownerToCowList[msg.sender];
+    }
+
+    function getAliveCowsOfOwner() public view returns(Cow[] memory) {
+        Cow[] memory cows = ownerToCowList[msg.sender];
+        uint256 aliveCows = 0;
+        for(uint i=0; i < cows.length; i++) { 
+            if(deathCows[cows[i].id] == false) {
+                aliveCows++;
+            }
+        }
+        Cow[] memory aliveCowList = new Cow[](aliveCows);
+        uint256 index = 0;
+        for(uint i=0; i < cows.length; i++) { 
+            if(deathCows[cows[i].id] == false) {
+                aliveCowList[index] = cows[i];
+                index++;
+            }
+        }
+        return aliveCowList;
     }
     
     function getAllMilks() public view returns(Milk[] memory) {
