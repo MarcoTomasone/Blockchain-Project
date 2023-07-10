@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function FormDialog({open, onClose, onCancel}) {
+export default function AddressSendDialog({open, onClose, onCancel}) {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -29,18 +29,16 @@ export default function FormDialog({open, onClose, onCancel}) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Send Address</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Welcome to Milk Tracker! 
-            Here you can check info about the product you have purchased and the cow that produced it.
-            To start, please insert the product ID you can read on the label.
+           Write here the address you want to send the cow to.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Product ID"
+            label="Address"
             type="text"
             fullWidth
             variant="standard"
@@ -50,7 +48,7 @@ export default function FormDialog({open, onClose, onCancel}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleClose}>Search</Button>
+          <Button onClick={handleClose}>Send</Button>
         </DialogActions>
       </Dialog>
     </div>

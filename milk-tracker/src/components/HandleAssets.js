@@ -6,21 +6,20 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Icon } from '@iconify/react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SendIcon from '@mui/icons-material/Send';
 import cowIcon from '@iconify/icons-mdi/cow';
-import { getAccounts, addCow, getAllCows, getCowsOfOwner, killCowFromContract } from '../utils/web3access.mjs';
+import AddressSendDialog from './AddressSendDialog';
+import { getAccounts, transferCowFromContract, getAllCows, getCowsOfOwner, killCowFromContract } from '../utils/web3access.mjs';
 
 export default function HandleAssets() {
 
     const [myAccount, setMyAccount] = useState(null);
     const [cowList, setCowList] = useState([]);
     const [cowId, setCowId] = useState(null);
-    const navigate = useNavigate();
-    
+    const [dialogOpen, setDialogOpen] = useState(false);
     //Component Did Mount
     useEffect(() => {
         console.log("OPENING LOG: " + myAccount);
@@ -33,6 +32,7 @@ export default function HandleAssets() {
 
     useEffect(() => {
         console.log("ACCOUNT CHANGED: " + myAccount);  
+        setCowList([]);
         if (myAccount !== null) {
             getCowsOfOwnerFromContract().then((cowList) => {
                 console.log("COWLIST: " + cowList);
@@ -62,10 +62,33 @@ export default function HandleAssets() {
         setCowList(cowList);
     };
 
+    const handleDialogOpen = () => {
+        setDialogOpen(true);
+    };
+  
+    const handleDialogClose = async (value) => {
+        console.log("NEW ADDRESS: " + value);
+        await transferCowFromContract(myAccount, value, cowId);
+        setDialogOpen(false);
+        alert("SUCCESS: Cow sent to: " + value);
+    };
+
+    const handleCancel = () => {
+        setDialogOpen(false);
+    };
+
+    const sendCow = async (cowId) => {
+        console.log("sendCow: "+ cowId);
+        setCowId(cowId);
+        console.log("ACCOUNT TO SEND: " + myAccount);
+        handleDialogOpen();
+    };    
+
     return(
         <div style={{height: '88vh'}}>
+        <AddressSendDialog open={dialogOpen} onClose={handleDialogClose} onCancel={handleCancel} />
             <h1 style={{textColor: 'primary'}}>Handle Assets</h1>
-            <List sx={{ width: '100%', 
+            <List key={'list'} sx={{ width: '100%', 
                 maxHeight: '75%',
                 '& ul': { padding: 0 },
                 overflow: 'auto', 
@@ -73,18 +96,19 @@ export default function HandleAssets() {
                 bgcolor: 'background.paper' }}>
                 
                 {cowList.map((cow) => (
-                    <>
+                    <div key={'div-list' +cow.id}>
                         <ListItem alignItems="flex-start" key={cow.id}>
-                            <div style={{width: '30%'}}>
-                                <ListItemAvatar>
-                                    <Icon width='100%' icon={cowIcon} color='primary'/>
+                            <div key={'div-icon' + cow.id} style={{width: '30%'}}>
+                                <ListItemAvatar key={'list-item-avatar' + cow.id}>
+                                    <Icon key={'avatar' + cow.id} width='100%' icon={cowIcon} color='primary'/>
                                 </ListItemAvatar>
                             </div>
-                            <ListItemText
+                            <ListItemText key={'list-item-text' + cow.id}
                             primary= {"Cow ID: " + cow.id}
                             secondary={
-                            <React.Fragment>
+                            <React.Fragment key={'fragment' + cow.id}>
                                 <Typography
+                                key={cow.id}
                                 sx={{ display: 'inline' }}
                                 component="span"
                                 variant="body2"
@@ -96,16 +120,15 @@ export default function HandleAssets() {
                             </React.Fragment>
                             }
                             />
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <DeleteForeverIcon style={{ color: 'red' }} onClick={() => killUpdateCows(cow.id)}/>
-                                <SendIcon color='primary' />
+                        <div key={'div' + cow.id} style={{ display: 'flex', flexDirection: 'column' }}>
+                                <DeleteForeverIcon key={'delete' + cow.id} style={{ color: 'red' }} onClick={() => killUpdateCows(cow.id)}/>
+                                <SendIcon  key={'transfer' + cow.id} color='primary' onClick={() => sendCow(cow.id)} />
                             </div>
                         </ListItem>
-                        <Divider variant="inset" component="li" />
-                    </>
+                        <Divider key={'divider' + cow.id} variant="inset" component="li" />
+                    </div>
                 ))};
             </List>
-        </div>
-        
+        </div> 
     );
 } 
