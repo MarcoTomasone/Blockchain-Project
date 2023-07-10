@@ -32,14 +32,15 @@ export default function HandleAssets() {
 
     useEffect(() => {
         console.log("ACCOUNT CHANGED: " + myAccount);  
-        setCowList([]);
         if (myAccount !== null) {
             getCowsOfOwnerFromContract().then((cowList) => {
                 console.log("COWLIST: " + cowList);
-            setCowList(cowList);
+                const sortedCowList = [...cowList].sort((a, b) => a.id - b.id);
+                setCowList(sortedCowList);
             });
         }
     }, [myAccount]);
+    
 
     window.ethereum.on('accountsChanged', function (accounts) {
         console.log("ACCOUNTSSSSS: " + accounts);

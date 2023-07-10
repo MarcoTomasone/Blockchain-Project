@@ -69,9 +69,12 @@ contract MilkFactory {
         //Delete cow from old owner mapping 
         for(uint i=0; i < ownerToCowList[msg.sender].length; i++) { 
             if(ownerToCowList[msg.sender][i].id == _cowId) {
-                delete ownerToCowList[msg.sender][i];
+                ownerToCowList[msg.sender][i] = ownerToCowList[msg.sender][(ownerToCowList[msg.sender].length-1)];
             }
         }
+
+        ownerToCowList[msg.sender].pop();
+
         //Add cow to new owner mapping
         ownerToCowList[_newOwner].push(getCow(_cowId));
         cowToOwner[_cowId] = _newOwner;
