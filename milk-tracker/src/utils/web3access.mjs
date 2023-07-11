@@ -53,6 +53,14 @@ async function transferCowFromContract(account, newAccount, cowId) {
     
 }
 
+async function transferMilkFromContract(account, newAccount, milkId) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkFactoryContract.methods.transferMilk(milkId, newAccount)
+            .send({ from: account, gas:3000000 });
+    return await MilkFactoryContract.methods.getMilksOfOwner()
+                .call({ from: account, gas:3000000});
+}
+
 function getCowsOfOwner(account) {
     try {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
@@ -168,6 +176,7 @@ function insertFakeData(account) {
 export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, transferCowFromContract,
          addDairyToContract, checkIfDairyExists, getDairyInfo,
          getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, killCowFromContract,
+         transferMilkFromContract,
          getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct};
 
 

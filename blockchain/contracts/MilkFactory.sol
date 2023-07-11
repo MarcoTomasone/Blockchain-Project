@@ -106,6 +106,22 @@ contract MilkFactory {
         cowToOwner[_cowId] = _newOwner;
     }
 
+    function transferMilk(uint256 _milkId, address _newOwner) public {
+        require(_newOwner != address(0), "Invalid new owner address");
+        
+        //Delete milk from old owner mapping 
+        for(uint i=0; i < ownerToMilk[msg.sender].length; i++) { 
+            if(ownerToMilk[msg.sender][i].id == _milkId) {
+                ownerToMilk[msg.sender][i] = ownerToMilk[msg.sender][(ownerToMilk[msg.sender].length-1)];
+            }
+        }
+        ownerMilkCount[msg.sender]--;
+        ownerToMilk[msg.sender].pop();
+        //Add milk to new owner mapping
+        ownerToMilk[_newOwner].push(getMilk(_milkId));
+        ownerMilkCount[_newOwner]++;
+    }
+
 
     function addCow(uint16 _weight, string memory _breed, string memory _birthDate, string memory _residence) public {
         Cow memory myCow = Cow(cowCount, _weight, _breed, _birthDate, _residence);
