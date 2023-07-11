@@ -135,83 +135,81 @@ export default function HandleAssets() {
 
     return (
         <div style={{ height: '88vh' }}>
-            <AddressSendDialog open={dialogOpen} onClose={handleDialogClose} onCancel={handleCancel} list={dairyList} isSendCow={isSendCow} />
-            <h1 style={{ textColor: 'primary' }}>Handle Assets</h1>
-            <div style={{ display: 'flex' }}>
-            {cowList.length === 0 ? (
+          <AddressSendDialog open={dialogOpen} onClose={handleDialogClose} onCancel={handleCancel} list={dairyList} isSendCow={isSendCow} />
+          <h1 style={{ textColor: 'primary' }}>Handle Assets</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ width: '45%' }}>
+              <h2>Cows</h2>
+              {cowList.length === 0 ? (
                 <h3>No cows to show</h3>
-            ) : (
-                <>
-                <h2>Cows</h2>
+              ) : (
                 <List
-                    key="cowList"
-                    sx={{
-                    width: '50%',
+                  key="cowList"
+                  sx={{
                     maxHeight: '75%',
                     '& ul': { padding: 0 },
                     overflow: 'auto',
                     maxWidth: 360,
                     bgcolor: 'background.paper',
-                    }}
+                  }}
                 >
-                    {cowList.map((cow) => (
+                  {cowList.map((cow) => (
                     <div key={'div-list' + cow.id}>
                         <ListItem alignItems="flex-start" key={cow.id}>
-                        <div key={'div-icon' + cow.id} style={{ width: '30%' }}>
-                            <ListItemAvatar key={'list-item-avatar' + cow.id}>
-                            <Icon key={'avatar' + cow.id} width="100%" icon={cowIcon} color="primary" />
-                            </ListItemAvatar>
-                        </div>
-                        <ListItemText
-                            key={'list-item-text' + cow.id}
-                            primary={'Cow ID: ' + cow.id}
-                            secondary={
-                            <React.Fragment key={'fragment' + cow.id}>
-                                <Typography
-                                key={cow.id}
-                                sx={{ display: 'inline' }}
-                                component="span"
-                                variant="body2"
-                                color="text.primary"
-                                >
-                                {cow.breed + '\n'}
-                                </Typography>
-                                {'Weight: ' + cow.weight + ' kg' + ' | ' + 'Residence: ' + cow.residence}
-                            </React.Fragment>
-                            }
-                        />
-                        <div key={'div' + cow.id} style={{ display: 'flex', flexDirection: 'column' }}>
-                            <DeleteForeverIcon
-                            key={'delete' + cow.id}
-                            style={{ color: 'red' }}
-                            onClick={() => killUpdateCows(cow.id)}
+                            <div key={'div-icon' + cow.id} style={{ width: '30%' }}>
+                                <ListItemAvatar key={'list-item-avatar' + cow.id}>
+                                <Icon key={'avatar' + cow.id} width="100%" icon={cowIcon} color="primary" />
+                                </ListItemAvatar>
+                            </div>
+                            <ListItemText
+                                key={'list-item-text' + cow.id}
+                                primary={'Cow ID: ' + cow.id}
+                                secondary={
+                                <React.Fragment key={'fragment' + cow.id}>
+                                    <Typography
+                                    key={cow.id}
+                                    sx={{ display: 'inline' }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                    >
+                                    {cow.breed + '\n'}
+                                    </Typography>
+                                    {'Weight: ' + cow.weight + ' kg' + ' | ' + 'Residence: ' + cow.residence}
+                                </React.Fragment>
+                                }
                             />
-                            <SendIcon key={'transfer' + cow.id} color="primary" onClick={() => sendCow(cow.id)} />
-                        </div>
-                        </ListItem>
-                        <Divider key={'divider' + cow.id} variant="inset" component="li" />
+                            <div key={'div' + cow.id} style={{ display: 'flex', flexDirection: 'column' }}>
+                                <DeleteForeverIcon
+                                key={'delete' + cow.id}
+                                style={{ color: 'red' }}
+                                onClick={() => killUpdateCows(cow.id)}
+                                />
+                                <SendIcon key={'transfer' + cow.id} color="primary" onClick={() => sendCow(cow.id)} />
+                            </div>
+                            </ListItem>
+                            <Divider key={'divider' + cow.id} variant="inset" component="li" />
                     </div>
-                   
-                    ))}
-                </List> 
-                </>)}
-                {milkList.length === 0 ? (
-                        <h3 style={{marginLeft : '10%'}}>No Milks to show</h3>
-                    ) : (
-                        <>
-                <h2>Milks</h2>
+                  ))}
+                </List>
+              )}
+            </div>
+            <div style={{ width: '45%' }}>
+              <h2>Milks</h2>
+              {milkList.length === 0 ? (
+                <h3>No milks to show</h3>
+              ) : (
                 <List
-                    key="milkList"
-                    sx={{
-                    width: '50%',
+                  key="milkList"
+                  sx={{
                     maxHeight: '75%',
                     '& ul': { padding: 0 },
                     overflow: 'auto',
                     maxWidth: 360,
                     bgcolor: 'background.paper',
-                    }}
+                  }}
                 >
-                    {milkList.map((milk) => (
+                  {milkList.map((milk) => (
                     <div key={'div-list' + milk.id}>
                         <ListItem alignItems="flex-start" key={milk.id}>
                             <div key={'div-icon' + milk.id} style={{ width: '30%' }}>
@@ -245,10 +243,11 @@ export default function HandleAssets() {
                         </ListItem>
                         <Divider key={'divider' + milk.id} variant="inset" component="li" />
                     </div>
-                    ))}
-                </List> 
-                </>)}
-                </div>
+                  ))}
+                </List>
+              )}
             </div>
-      );      
+          </div>
+        </div>
+      );            
 } 
