@@ -153,7 +153,7 @@ export default function HandleAssets() {
                     bgcolor: 'background.paper',
                   }}
                 >
-                  {cowList.map((cow) => (
+                  {[...cowList].sort((a, b) => a.id - b.id).map((cow) => (
                     <div key={'div-list' + cow.id}>
                         <ListItem alignItems="flex-start" key={cow.id}>
                             <div key={'div-icon' + cow.id} style={{ width: '30%' }}>
@@ -209,7 +209,7 @@ export default function HandleAssets() {
                     bgcolor: 'background.paper',
                   }}
                 >
-                  {milkList.map((milk) => (
+                  {[...milkList].sort((a, b) => a.id - b.id).map((milk) => (
                     <div key={'div-list' + milk.id}>
                         <ListItem alignItems="flex-start" key={milk.id}>
                             <div key={'div-icon' + milk.id} style={{ width: '30%' }}>

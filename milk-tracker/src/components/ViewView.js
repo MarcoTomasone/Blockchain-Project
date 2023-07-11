@@ -123,7 +123,7 @@ export default function ViewView() {
             </p>
             <p>
             Do you want to report that your product is not suitable for consumption?
-            <Button variant="contained" color="primary" style={{ margin: "10px" }} onClick={() => reportSpoiledProduct(myAccount, milkData.id)}>
+            <Button variant="contained" color="primary" style={{ margin: "10px" }} onClick={() => isCodeInvalid || productId==null ? null : reportSpoiledProduct(myAccount, milkData.id)}>
                 Report
             </Button>
             </p>

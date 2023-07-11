@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@iconify/icons-mdi": "^1.2.46",
+    "@iconify/react": "^4.1.1"
+  }
+}
