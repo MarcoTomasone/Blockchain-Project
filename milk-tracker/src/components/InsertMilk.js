@@ -48,6 +48,7 @@ export default function InsertMilk() {
     const getCowsOfOwnerFromContract = async () => {
         console.log("getCowsOfOwnerFromContract");
         console.log("ACCOUNT TO SEND: " + myAccount);
+        //const cowList = await getAllCows();  //REMEMBER THIS IS JUST TO SHOW THAT DEATH COWS ARE ALREADY IN THE BLOCKCHAIN
         const cowList = await getCowsOfOwner(myAccount);
         return cowList;
     };
@@ -57,7 +58,7 @@ export default function InsertMilk() {
         console.log(event.target.value);
     };
 
-    const sendData = () => {
+    const sendData = async () => {
         const data = {
             cowId: cowId,
             dateOfProduction: document.getElementById("dateOfProduction").value,
@@ -75,13 +76,13 @@ export default function InsertMilk() {
         }
             
         if(allFieldsFilled) {
+            await addMilk(myAccount, data);
             TextFieldIds.forEach((id) => {
                 document.getElementById(id).value = "";
                 document.getElementById(id).style.border = "2px solid blue";
             });
             setCowId(null);
             setDate(dayjs());
-            var result = addMilk(myAccount, data);
             console.log(data);  
         } 
         else 

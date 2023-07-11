@@ -69,6 +69,7 @@ export default function InsertProduct() {
         };
         var allFieldsFilled = true;
         
+
         if(milkId == null) {
             document.getElementById("demo-simple-select").style.border = "2px solid red";
             allFieldsFilled = false;
@@ -81,16 +82,25 @@ export default function InsertProduct() {
                 }
             });
         }
+
+        if(expiryDate.isBefore(dateOfProduction)) {
+            allFieldsFilled = false;
+            document.getElementById("expiryDate").style.border = "2px solid red";
+            document.getElementById("expiryDate").style.textColor = "red";
+            alert("Expiry date must be after date of production");
+        }
         
         if(allFieldsFilled) {
+            var productId = await addProduct(myAccount, data);
             TextFieldIds.forEach((id) => {
                 document.getElementById(id).value = "";
                 document.getElementById(id).style.border = "2px solid blue";
             });
             console.log(data);  
             setMilkId(null);
+            setDateOfProduction(dayjs());
+            setExpiryDate(dayjs());
             document.getElementById("demo-simple-select").style.border = "2px solid blue";
-            var productId = await addProduct(myAccount, data);
             console.log("productId: " + productId);
             setQrCodeText(productId);
         }  

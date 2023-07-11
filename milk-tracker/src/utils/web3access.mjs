@@ -15,35 +15,11 @@ async function getAccounts() {
 async function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
+    await MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
             .send({ from: account, gas:3000000 }); 
-    return true; //TODO: change contract to return true false
+    return true; 
 }
 
-/*
-async function addCow(account, data) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const web3 = getWeb3Context();
-      const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-      
-      const transaction = MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
-        .send({ from: account, gas: 3000000 });
-
-      transaction.on("transactionHash", (transactionHash) => {
-        resolve(transactionHash);
-      });
-
-      transaction.on("error", (error) => {
-        reject(error);
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-*/
 function getAllCows(account){
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
     return MilkFactoryContract.methods.getAllCows()
@@ -52,8 +28,10 @@ function getAllCows(account){
 
 async function transferCowFromContract(account, newAccount, cowId) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    MilkFactoryContract.methods.transferCow(cowId, newAccount)
+    await MilkFactoryContract.methods.transferCow(cowId, newAccount)
             .send({ from: account, gas:3000000 });
+    return await MilkFactoryContract.methods.getAliveCowsOfOwner()
+                .call({ from: account, gas:3000000});
     
 }
 
@@ -67,11 +45,11 @@ function getCowsOfOwner(account) {
     }       
 }
 
-function addMilk(account, data) {
+async function addMilk(account, data) {
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    MilkFactoryContract.methods.addMilk(data.cowId, data.dateOfProduction)
+    await MilkFactoryContract.methods.addMilk(data.cowId, data.dateOfProduction)
                 .send({ from: account, gas:3000000 });
-    return true; //TODO: change contract to return true false
+    return true; 
 }
 
 function getAllMilk(account) {
@@ -99,7 +77,7 @@ async function addProduct(account, data) {
                 .send({ from: account, gas:3000000 });
     const events = receipt.events.ProductAdded;
     const productId = events.returnValues.productId;
-    return productId; //TODO: change contract to return true false
+    return productId; 
     }
 
 function getAllProductsFromContract(account) {
