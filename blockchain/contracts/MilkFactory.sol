@@ -77,6 +77,18 @@ contract MilkFactory {
         return false;
     }
 
+    function getAllDairyExceptSelf() public view returns (Dairy[] memory) {
+        Dairy[] memory result = new Dairy[](dairyList.length - 1);
+        uint256 resultIndex = 0;
+        for (uint256 i = 0; i < dairyList.length; i++) {
+            if (dairyList[i].dairyAddress != msg.sender) {
+                result[resultIndex] = dairyList[i];
+                resultIndex++;
+            }
+        }
+        return result;
+    }
+
     function transferCow(uint256 _cowId, address _newOwner) public onlyOwnerOf(_cowId) {
         require(_newOwner != address(0), "Invalid new owner address");
         

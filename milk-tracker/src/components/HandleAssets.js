@@ -12,14 +12,16 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SendIcon from '@mui/icons-material/Send';
 import cowIcon from '@iconify/icons-mdi/cow';
 import AddressSendDialog from './AddressSendDialog';
-import { getAccounts, transferCowFromContract, getAllCows, getCowsOfOwner, killCowFromContract } from '../utils/web3access.mjs';
+import { getAccounts, transferCowFromContract, getAllCows, getCowsOfOwner, killCowFromContract , getDairyInfo} from '../utils/web3access.mjs';
 
 export default function HandleAssets() {
 
     const [myAccount, setMyAccount] = useState(null);
-    const [cowList, setCowList] = useState([]);
     const [cowId, setCowId] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [cowList, setCowList] = useState([]);
+    const [dairyList, setDairyList] = useState([]);
+    
     //Component Did Mount
     useEffect(() => {
         console.log("OPENING LOG: " + myAccount);
@@ -28,6 +30,7 @@ export default function HandleAssets() {
             console.log("ACCOUNT0: " + accounts[0]);
             setMyAccount(accounts[0]);
         });
+       
     }, []); // empty dependency array to run only once
 
     useEffect(() => {
@@ -36,6 +39,11 @@ export default function HandleAssets() {
             getCowsOfOwnerFromContract().then((cowList) => {
                 console.log("COWLIST: " + cowList);
                 setCowList(cowList);
+            });
+
+            getDairyList().then((dairyList) => {
+                console.log("DAIRYLIST: " + dairyList);
+                setDairyList(dairyList);
             });
         }
     }, [myAccount]);
@@ -46,6 +54,13 @@ export default function HandleAssets() {
         setMyAccount(accounts[0]);
     });
   
+    const getDairyList = async () => {
+        console.log("getDairyList");
+        console.log("ACCOUNT TO SEND: " + myAccount);
+        const dairyList = await getDairyInfo(myAccount);
+        return dairyList;
+    };
+
     const getCowsOfOwnerFromContract = async () => {
         console.log("getCowsOfOwnerFromContract");
         console.log("ACCOUNT TO SEND: " + myAccount);
@@ -88,7 +103,7 @@ export default function HandleAssets() {
 
     return(
         <div style={{height: '88vh'}}>
-        <AddressSendDialog open={dialogOpen} onClose={handleDialogClose} onCancel={handleCancel} />
+        <AddressSendDialog open={dialogOpen} onClose={handleDialogClose} onCancel={handleCancel} list={dairyList} />
             <h1 style={{textColor: 'primary'}}>Handle Assets</h1>
             { cowList.length === 0 ? <h3>No cows to show</h3> : 
                 <List key={'list'} sx={{ width: '100%', 

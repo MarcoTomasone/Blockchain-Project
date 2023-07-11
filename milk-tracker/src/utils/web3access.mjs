@@ -24,6 +24,12 @@ async function checkIfDairyExists(account) {
             .call({ from: account, gas:3000000 });
 }
 
+async function getDairyInfo(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return await MilkFactoryContract.methods.getAllDairyExceptSelf().
+            call({ from: account, gas:3000000 });   
+}
+
 async function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
@@ -160,7 +166,7 @@ function insertFakeData(account) {
 }
 
 export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, transferCowFromContract,
-         addDairyToContract, checkIfDairyExists,
+         addDairyToContract, checkIfDairyExists, getDairyInfo,
          getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, killCowFromContract,
          getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct};
 
