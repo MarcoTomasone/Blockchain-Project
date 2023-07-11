@@ -70,39 +70,6 @@ export default function InsertCow() {
         } else {
             alert("Please fill all the fields");
         }
-        /**
-        try {
-  console.log(data);
-  console.log(myAccount);
-  const transactionHash = await addCow(myAccount, data);
-
-  await new Promise((resolve, reject) => {
-    const checkConfirmation = async () => {
-      try {
-        const transactionReceipt = await web3.eth.getTransactionReceipt(transactionHash);
-        if (transactionReceipt) {
-          console.log("Transazione confermata su MetaMask");
-          resolve();
-        } else {
-          setTimeout(checkConfirmation, 1000);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    };
-
-    checkConfirmation();
-  });
-
-  TextFieldIds.forEach((id) => {
-    document.getElementById(id).value = "";
-    document.getElementById(id).style.border = "2px solid blue";
-  });
-} catch (error) {
-  console.log("Errore durante l'invio dei dati:", error);
-}
-
-         */
     };
 
     const containerStyle = {

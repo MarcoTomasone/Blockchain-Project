@@ -47,6 +47,7 @@ contract MilkFactory {
     event SpoiledProduct(uint256 productId);
     event LogMessage(string message);
     
+    Dairy[] public dairyList;
     Cow[] public cowList;
     Milk[] public milkList;
     Product[] public productList;
@@ -61,8 +62,21 @@ contract MilkFactory {
     mapping(uint256 => bool) public spoiledMilks;
     mapping(uint256 => bool) public deathCows;
    
-    //mapping(uint256 => uint256) public milkToCow;
-    
+   
+    function addDairy(string memory _dairyName, string memory _dairyPlace) public {
+        Dairy memory myDairy = Dairy(msg.sender, _dairyName, _dairyPlace);
+        dairyList.push(myDairy);
+    }
+
+    function checkDairyIsRegistered() public view returns (bool) {
+        for(uint i=0; i < dairyList.length; i++) { 
+            if(dairyList[i].dairyAddress == msg.sender) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function transferCow(uint256 _cowId, address _newOwner) public onlyOwnerOf(_cowId) {
         require(_newOwner != address(0), "Invalid new owner address");
         

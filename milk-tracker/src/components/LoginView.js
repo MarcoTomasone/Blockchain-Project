@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import dairy from '../img/dairy.jpg';
 import client from '../img/client.jpg';
 import AlertDialog from './AlertDialog';
+import { checkIfDairyExists } from '../utils/web3access.mjs';
 
 const images = [
     {
@@ -107,10 +108,22 @@ function LoginView() {
         // Try to connect to MetaMask.
         if (isConsoleActive) console.log("Tentativo di accesso a MetaMask");
         window.ethereum.request({ method: 'eth_requestAccounts' })
-            .then(() => {
+            .then(async () => {
                 if (isConsoleActive) console.log("Accesso avvenuto con successo");
-                // If the connection is successful, navigate to the homepage.
-                navigator(toUrl);
+                //Ricevi account
+                const account = window.ethereum.selectedAddress;
+                console.log(account);
+                var dairyExist = await checkIfDairyExists(account);
+                console.log('CHECK DAIRY EXIST ' + dairyExist);
+                if(toUrl === '/insert' && dairyExist) 
+                    // If the connection is successful, navigate to the homepage.
+                    navigator(toUrl);
+                else if(toUrl === '/view')
+                    navigator(toUrl);
+                else {
+                    console.log('Dairy not registered');
+                    navigator('/AddDairy');
+                }
             })
             .catch(() => {
                 return <AlertDialog title={"Connection Error"} description={"Error during the connection to Metamask. Try later."}></AlertDialog>;

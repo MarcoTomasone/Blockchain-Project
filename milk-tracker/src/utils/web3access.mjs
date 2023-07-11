@@ -12,6 +12,18 @@ async function getAccounts() {
     return await getWeb3Context().eth.requestAccounts();
 }
 
+async function addDairyToContract(account, data) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkFactoryContract.methods.addDairy(data.dairyName, data.dairyPlace)
+            .send({ from: account, gas:3000000 });
+}
+
+async function checkIfDairyExists(account) {
+    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return await MilkFactoryContract.methods.checkDairyIsRegistered()
+            .call({ from: account, gas:3000000 });
+}
+
 async function addCow(account, data){
     const web3 = getWeb3Context();
     const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
@@ -148,6 +160,7 @@ function insertFakeData(account) {
 }
 
 export  {getWeb3Context, getAccounts, addCow, addMilk, addProduct, getAllCows, transferCowFromContract,
+         addDairyToContract, checkIfDairyExists,
          getCowsOfOwner, getAllMilk, getMilksOfOwner, insertFakeData, killCowFromContract,
          getAllProductsFromContract, loadProductInfoFromContract, loadMilkInfoFromContract, loadCowInfoFromContract, reportSpoiledProduct};
 
