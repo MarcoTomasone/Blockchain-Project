@@ -156,11 +156,12 @@ export default function HandleAssets() {
                   {cowList.map((cow) => (
                     <div key={'div-list' + cow.id}>
                         <ListItem alignItems="flex-start" key={cow.id}>
-                            <div key={'div-icon' + cow.id} style={{ width: '30%' }}>
+                            <div key={'div-icon' + cow.id} style={{ width: '20%' }}>
                                 <ListItemAvatar key={'list-item-avatar' + cow.id}>
                                 <Icon key={'avatar' + cow.id} width="100%" icon={cowIcon} color="primary" />
                                 </ListItemAvatar>
                             </div>
+                            <div key={'div-text' + cow.id} style={{ width: '80%' }}>
                             <ListItemText
                                 key={'list-item-text' + cow.id}
                                 primary={'Cow ID: ' + cow.id}
@@ -179,6 +180,7 @@ export default function HandleAssets() {
                                 </React.Fragment>
                                 }
                             />
+                            </div>
                             <div key={'div' + cow.id} style={{ display: 'flex', flexDirection: 'column' }}>
                                 <DeleteForeverIcon
                                 key={'delete' + cow.id}
