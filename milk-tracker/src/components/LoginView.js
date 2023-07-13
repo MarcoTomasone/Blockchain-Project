@@ -115,9 +115,11 @@ function LoginView() {
                 console.log(account);
                 var dairyExist = await checkIfDairyExists(account);
                 console.log('CHECK DAIRY EXIST ' + dairyExist);
-                if(toUrl === '/insert' && dairyExist) 
+               
+                if(toUrl === '/insert' && dairyExist) {
                     // If the connection is successful, navigate to the homepage.
-                    navigator(toUrl);
+                    console.log("I'm here")
+                    navigator(toUrl); }
                 else if(toUrl === '/view')
                     navigator(toUrl);
                 else {
@@ -131,10 +133,6 @@ function LoginView() {
             });
     }
 
-    // Function to close the popup modal.
-    const popupCloseHandler = (dataHandler) => {
-        //setErrorPopup(dataHandler);
-    };
 
     return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>

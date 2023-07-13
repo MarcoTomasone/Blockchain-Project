@@ -13,58 +13,58 @@ async function getAccounts() {
 }
 
 async function addDairyToContract(account, data) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    await MilkFactoryContract.methods.addDairy(data.dairyName, data.dairyPlace)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkTracker.methods.addDairy(data.dairyName, data.dairyPlace)
             .send({ from: account, gas:3000000 });
 }
 
 async function checkIfDairyExists(account) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return await MilkFactoryContract.methods.checkDairyIsRegistered()
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return await MilkTracker.methods.checkDairyIsRegistered()
             .call({ from: account, gas:3000000 });
 }
 
 async function getDairyInfo(account) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return await MilkFactoryContract.methods.getAllDairyExceptSelf().
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return await MilkTracker.methods.getAllDairyExceptSelf().
             call({ from: account, gas:3000000 });   
 }
 
 async function addCow(account, data){
     const web3 = getWeb3Context();
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    await MilkFactoryContract.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkTracker.methods.addCow(data.cowWeight, data.cowBreed, data.cowBirth, data.cowResidence)
             .send({ from: account, gas:3000000 }); 
     return true; 
 }
 
 function getAllCows(account){
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.getAllCows()
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkTracker.methods.getAllCows()
             .call({ from: account, gas:3000000});
 }
 
 async function transferCowFromContract(account, newAccount, cowId) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    await MilkFactoryContract.methods.transferCow(cowId, newAccount)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkTracker.methods.transferCow(cowId, newAccount)
             .send({ from: account, gas:3000000 });
-    return await MilkFactoryContract.methods.getAliveCowsOfOwner()
+    return await MilkTracker.methods.getAliveCowsOfOwner()
                 .call({ from: account, gas:3000000});
     
 }
 
 async function transferMilkFromContract(account, newAccount, milkId) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    await MilkFactoryContract.methods.transferMilk(milkId, newAccount)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkTracker.methods.transferMilk(milkId, newAccount)
             .send({ from: account, gas:3000000 });
-    return await MilkFactoryContract.methods.getMilksOfOwner()
+    return await MilkTracker.methods.getMilksOfOwner()
                 .call({ from: account, gas:3000000});
 }
 
 function getCowsOfOwner(account) {
     try {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.getAliveCowsOfOwner()
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkTracker.methods.getAliveCowsOfOwner()
             .call({ from: account, gas:3000000});
     } catch (error) {
         console.log("SONO IN ERRORE");    
@@ -72,22 +72,22 @@ function getCowsOfOwner(account) {
 }
 
 async function addMilk(account, data) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    await MilkFactoryContract.methods.addMilk(data.cowId, data.dateOfProduction)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    await MilkTracker.methods.addMilk(data.cowId, data.dateOfProduction)
                 .send({ from: account, gas:3000000 });
     return true; 
 }
 
 function getAllMilk(account) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.getAllMilk()
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkTracker.methods.getAllMilk()
                 .call({ from: account, gas:3000000});
 }
 
 function getMilksOfOwner(account) {
     try {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());  
-    return MilkFactoryContract.methods.getMilksOfOwner()
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());  
+    return MilkTracker.methods.getMilksOfOwner()
                 .call({ from: account, gas:3000000});   
     } catch (error) {
         console.log("SONO IN ERRORE");
@@ -98,8 +98,8 @@ function getMilksOfOwner(account) {
 async function addProduct(account, data) {
     console.log("addProduct");
     console.log(data);
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    const receipt = await MilkFactoryContract.methods.addProduct(data.milkId, data.dateOfProduction, data.productsType, data.expiryDate)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    const receipt = await MilkTracker.methods.addProduct(data.milkId, data.dateOfProduction, data.productsType, data.expiryDate)
                 .send({ from: account, gas:3000000 });
     const events = receipt.events.ProductAdded;
     const productId = events.returnValues.productId;
@@ -107,15 +107,16 @@ async function addProduct(account, data) {
     }
 
 function getAllProductsFromContract(account) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    return MilkFactoryContract.methods.getAllProducts()
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    return MilkTracker.methods.getAllProducts()
                 .call({ from: account, gas:3000000});
 }
 
 async function loadProductInfoFromContract(productId) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
-        const product = await MilkFactoryContract.methods.getProduct(productId).call();
+        const product = await MilkTracker
+.methods.getProduct(productId).call();
         return product;
     } catch (error) {
         console.error(error);
@@ -124,10 +125,12 @@ async function loadProductInfoFromContract(productId) {
 }
 
 async function loadMilkInfoFromContract(milkId) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
-        const milk = await MilkFactoryContract.methods.getMilk(milkId).call();
-        const milkState = await MilkFactoryContract.methods.isMilkSpoiled(milkId).call();
+        const milk = await MilkTracker
+.methods.getMilk(milkId).call();
+        const milkState = await MilkTracker
+.methods.isMilkSpoiled(milkId).call();
         return {milk, milkState};
     } catch (error) {
         console.error(error);
@@ -136,9 +139,10 @@ async function loadMilkInfoFromContract(milkId) {
 }
 
 async function loadCowInfoFromContract(cowId) {
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
-        const cow = await MilkFactoryContract.methods.getCow(cowId).call();
+        const cow = await MilkTracker
+.methods.getCow(cowId).call();
         return cow;
     } catch (error) {
         console.error(error);
@@ -148,18 +152,16 @@ async function loadCowInfoFromContract(cowId) {
 
 async function reportSpoiledProduct(account, productId) {
     console.log("I'm reporting for product: " + productId);
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress()); 
-    const receipt =  await MilkFactoryContract.methods.reportSpoiledProduct(productId)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress()); 
+    const receipt =  await MilkTracker.methods.reportSpoiledProduct(productId)
         .send( { from: account, gas:3000000 });
     console.log(receipt);
-    const events = receipt.events.LogMessage;
-    console.log(events);
 }
 
 async function killCowFromContract(account, cowId) {
     console.log("I'm killing cow: " + cowId);
-    const MilkFactoryContract = new web3.eth.Contract(getContractABI(), getContractAddress());
-    const receipt = await MilkFactoryContract.methods.killCow(cowId)
+    const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
+    const receipt = await MilkTracker.methods.killCow(cowId)
         .send( { from: account, gas:3000000 });
 }
 
