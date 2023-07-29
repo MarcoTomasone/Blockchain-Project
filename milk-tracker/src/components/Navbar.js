@@ -7,12 +7,11 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
+import { checkIfDairyExists } from '../utils/web3access.mjs';
 
 const pages = ['insert', 'view', 'handleAssets'];
 
@@ -110,7 +109,19 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick = {() => navigate("/"+page)}
+                onClick = {async () => {
+                    if (page === "insert") {
+                        const account = window.ethereum.selectedAddress;
+                        var dairyExist = await checkIfDairyExists(account);
+                        if (!dairyExist) {
+                            alert("You need to register your dairy first!");
+                            navigate("/AddDairy");
+                        } 
+                        else navigate("/"+page)
+                    } else {
+                        navigate("/"+page)}
+                    }
+                }
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

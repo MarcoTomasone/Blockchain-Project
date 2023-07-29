@@ -22,7 +22,7 @@ contract MilkTracker {
         string dateOfProduction;
     }
 
-    struct Product { //Should add more info about product 
+    struct Product { 
         uint256 id;
         uint256 milkId;
         string dateOfProduction;
@@ -30,22 +30,19 @@ contract MilkTracker {
         string expiryDate;
     }
 
-    //constructor() {
-    //    owner = msg.sender;
-    //}
-
-    modifier onlyOwnerOf(uint256 _cowId) {
+    
+    modifier onlyOwnerOfCow(uint256 _cowId) {
         require(cowToOwner[_cowId] == msg.sender, "You are not the owner of this cow");
         _;
     }
-    
-    uint256 public cowCount = 0;
-    uint256 public milkCount = 0;
-    uint256 public productCount = 0;
+
+     modifier onlyOwnerOfMilk(uint256 _milkId) {
+        require(milkToOwner[_milkId] == msg.sender, "You are not the owner of this milk");
+        _;
+    }
 
     event ProductAdded(uint256 productId);
     event SpoiledProduct(uint256 productId);
-    event LogMessage(string message);
     
     Dairy[] public dairyList;
     Cow[] public cowList;
@@ -53,11 +50,8 @@ contract MilkTracker {
     Product[] public productList;
 
     mapping(uint256 => address) public cowToOwner;
-    mapping(uint256 => uint256) public milkToCow;
-    mapping(address => uint256) public ownerMilkCount;
+    mapping(uint256 => address) public milkToOwner; 
     mapping(address => Cow[]) public ownerToCowList;
-    mapping(uint256 => Milk[]) public cowToMilkList;
-    mapping(uint256 => Product[]) public milkToProductList;
     mapping(address => Milk[]) public ownerToMilk;
     mapping(uint256 => bool) public spoiledMilks;
     mapping(uint256 => bool) public deathCows;
@@ -89,24 +83,21 @@ contract MilkTracker {
         return result;
     }
 
-    function transferCow(uint256 _cowId, address _newOwner) public onlyOwnerOf(_cowId) {
+    function transferCow(uint256 _cowId, address _newOwner) public onlyOwnerOfCow(_cowId) {
         require(_newOwner != address(0), "Invalid new owner address");
-        
         //Delete cow from old owner mapping 
         for(uint i=0; i < ownerToCowList[msg.sender].length; i++) { 
             if(ownerToCowList[msg.sender][i].id == _cowId) {
                 ownerToCowList[msg.sender][i] = ownerToCowList[msg.sender][(ownerToCowList[msg.sender].length-1)];
             }
         }
-
         ownerToCowList[msg.sender].pop();
-
         //Add cow to new owner mapping
         ownerToCowList[_newOwner].push(getCow(_cowId));
         cowToOwner[_cowId] = _newOwner;
     }
 
-    function transferMilk(uint256 _milkId, address _newOwner) public {
+    function transferMilk(uint256 _milkId, address _newOwner) public onlyOwnerOfMilk(_milkId) {
         require(_newOwner != address(0), "Invalid new owner address");
         
         //Delete milk from old owner mapping 
@@ -115,45 +106,38 @@ contract MilkTracker {
                 ownerToMilk[msg.sender][i] = ownerToMilk[msg.sender][(ownerToMilk[msg.sender].length-1)];
             }
         }
-        ownerMilkCount[msg.sender]--;
         ownerToMilk[msg.sender].pop();
         //Add milk to new owner mapping
         ownerToMilk[_newOwner].push(getMilk(_milkId));
-        ownerMilkCount[_newOwner]++;
+        milkToOwner[_milkId] = _newOwner;
     }
 
 
     function addCow(uint16 _weight, string memory _breed, string memory _birthDate, string memory _residence) public {
-        Cow memory myCow = Cow(cowCount, _weight, _breed, _birthDate, _residence);
+        Cow memory myCow = Cow(cowList.length, _weight, _breed, _birthDate, _residence);
         cowList.push(myCow);
         //Increase cow count that is used as id
-        cowCount++;
         cowToOwner[myCow.id] = msg.sender;
         ownerToCowList[msg.sender].push(myCow);
     }
     
-    function addMilk(uint256 _cowId, string memory _dateOfProduction) public onlyOwnerOf(_cowId) {
+    function addMilk(uint256 _cowId, string memory _dateOfProduction) public onlyOwnerOfCow(_cowId) {
         //Check if cow exists
-        Milk memory myMilk = Milk(milkCount, _cowId, _dateOfProduction);
-        spoiledMilks[milkCount] = false;
+        Milk memory myMilk = Milk(milkList.length, _cowId, _dateOfProduction);
+        spoiledMilks[milkList.length] = false;
         milkList.push(myMilk);
-        milkCount++;
-        cowToMilkList[_cowId].push(myMilk);
-        milkToCow[myMilk.id] = _cowId;
-        ownerMilkCount[msg.sender]++; 
         ownerToMilk[msg.sender].push(myMilk);
+        milkToOwner[myMilk.id] = msg.sender;
     }
     
-    function addProduct(uint256 _milkId, string memory _dateOfProduction, string memory _productType, string memory _expiryDate) public  onlyOwnerOf(milkToCow[_milkId]) {
+    function addProduct(uint256 _milkId, string memory _dateOfProduction, string memory _productType, string memory _expiryDate) public  onlyOwnerOfMilk(_milkId) {
         //Check if milk exists
-        Product memory  myProduct = Product( productCount, _milkId, _dateOfProduction, _productType, _expiryDate);
+        Product memory  myProduct = Product( productList.length, _milkId, _dateOfProduction, _productType, _expiryDate);
+        emit ProductAdded(productList.length); 
         productList.push(myProduct);
-        milkToProductList[_milkId].push(myProduct);
-        emit ProductAdded(productCount);
-        productCount++;  
     }
 
-    function killCow(uint256 _cowId) public onlyOwnerOf(_cowId) {
+    function killCow(uint256 _cowId) public onlyOwnerOfCow(_cowId) {
         deathCows[_cowId] = true;
     }
 

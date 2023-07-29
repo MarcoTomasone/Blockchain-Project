@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import dairy from '../img/dairy.jpg';
 import client from '../img/client.jpg';
-import AlertDialog from './AlertDialog';
 import { checkIfDairyExists } from '../utils/web3access.mjs';
 
 const images = [
