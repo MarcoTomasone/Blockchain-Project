@@ -16,13 +16,12 @@ export default function AddressSendDialog({open, onClose, onCancel, list}) {
     var [dairyAddress, setDairyAddress] = useState(null);
 
     const handleClose = () => {
-        console.log("Dairy Address: " + dairyAddress);
         onClose(dairyAddress);
     };
 
     const handleCancel = () => {
         onCancel();
-        };
+    };
 
     const handleChangeSelect = (event) => {
         setDairyAddress(event.target.value);
@@ -31,36 +30,36 @@ export default function AddressSendDialog({open, onClose, onCancel, list}) {
 
   return (
     <div>
-      <Dialog open={open} onClose={handleCancel}>
-        <DialogTitle>Send To:</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-           Write here the address you want to send the cow to.
-          </DialogContentText>
-          { list.length !== 0 ? (
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Dairy</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={dairyAddress}
-                label="Dairy"
-                onChange={handleChangeSelect}
-            >
-                {list.map((dairy) => (
-                <MenuItem key={dairy.dairyAddress} value={dairy.dairyAddress}>
-                    Name: {dairy.dairyName} Place: {dairy.dairyPlace}
-                </MenuItem>
-                ))}
-            </Select>
-            </FormControl>)
-            : (<div>There are no dairies</div>)}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleClose}>Send</Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog open={open} onClose={handleCancel}>
+            <DialogTitle>Transfer To:</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                Select the dairy you want to transfer your asset to.
+                </DialogContentText>
+                {list.length !== 0 ? (
+                <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Dairy</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={dairyAddress}
+                    label="Dairy"
+                    onChange={handleChangeSelect}
+                >
+                    {list.map((dairy) => (
+                    <MenuItem key={dairy.dairyAddress} value={dairy.dairyAddress}>
+                        Name: {dairy.dairyName} Place: {dairy.dairyPlace}
+                    </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>)
+                : (<div>There are no dairies</div>)}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleClose}>Send</Button>
+            </DialogActions>
+        </Dialog>
     </div>
   );
 }

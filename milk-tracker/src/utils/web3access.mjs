@@ -115,8 +115,7 @@ function getAllProductsFromContract(account) {
 async function loadProductInfoFromContract(productId) {
     const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
-        const product = await MilkTracker
-.methods.getProduct(productId).call();
+        const product = await MilkTracker.methods.getProduct(productId).call();
         return product;
     } catch (error) {
         console.error(error);
@@ -127,10 +126,8 @@ async function loadProductInfoFromContract(productId) {
 async function loadMilkInfoFromContract(milkId) {
     const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
-        const milk = await MilkTracker
-.methods.getMilk(milkId).call();
-        const milkState = await MilkTracker
-.methods.isMilkSpoiled(milkId).call();
+        const milk = await MilkTracker.methods.getMilk(milkId).call();
+        const milkState = await MilkTracker.methods.isMilkSpoiled(milkId).call();
         return {milk, milkState};
     } catch (error) {
         console.error(error);
@@ -141,8 +138,7 @@ async function loadMilkInfoFromContract(milkId) {
 async function loadCowInfoFromContract(cowId) {
     const MilkTracker = new web3.eth.Contract(getContractABI(), getContractAddress());
     try {
-        const cow = await MilkTracker
-.methods.getCow(cowId).call();
+        const cow = await MilkTracker.methods.getCow(cowId).call();
         return cow;
     } catch (error) {
         console.error(error);

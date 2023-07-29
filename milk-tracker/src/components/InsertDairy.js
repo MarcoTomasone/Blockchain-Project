@@ -11,20 +11,12 @@ export default function InsertDairy() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log("OPENING LOG: " + myAccount);
         getAccounts().then((accounts) => {
-            console.log("GET: " + accounts);
-            console.log("ACCOUNT0: " + accounts[0]);
             setMyAccount(accounts[0]);
         });
     }, []); // empty dependency array to run only once
 
-    useEffect(() => {
-        console.log("ACCOUNT CHANGED: " + myAccount);  
-    }, [myAccount]);
-
     window.ethereum.on('accountsChanged', function (accounts) {
-        console.log("ACCOUNTSSSSS: " + accounts);
         setMyAccount(accounts[0]);
     });
 
@@ -49,16 +41,13 @@ export default function InsertDairy() {
         
         if (allFieldsFilled) {
             try {
-                console.log(data);
-                console.log(myAccount);
                 await addDairyToContract(myAccount, data);
                 TextFieldIds.forEach((id) => {
                   document.getElementById(id).value = "";
                   document.getElementById(id).style.border = "2px solid blue";
                 });
-                console.log("Transazione confermata su MetaMask");
               } catch (error) {
-                console.log("Errore durante l'invio dei dati:", error);
+                alert("Errore durante l'invio dei dati:", error);
               }
               navigate('/insert');
         } else {

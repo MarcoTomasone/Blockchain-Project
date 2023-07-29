@@ -23,16 +23,12 @@ export default function InsertMilk() {
     
     //Component Did Mount
     useEffect(() => {
-        console.log("OPENING LOG: " + myAccount);
         getAccounts().then((accounts) => {
-            console.log("GET: " + accounts);
-            console.log("ACCOUNT0: " + accounts[0]);
             setMyAccount(accounts[0]);
         });
     }, []); // empty dependency array to run only once
 
-    useEffect(() => {
-        console.log("ACCOUNT CHANGED: " + myAccount);  
+    useEffect(() => { 
         if (myAccount !== null) {
             getCowsOfOwnerFromContract().then((cowList) => {
             setCowList(cowList);
@@ -41,13 +37,10 @@ export default function InsertMilk() {
     }, [myAccount]);
 
     window.ethereum.on('accountsChanged', function (accounts) {
-        console.log("ACCOUNTSSSSS: " + accounts);
         setMyAccount(accounts[0]);
     });
   
     const getCowsOfOwnerFromContract = async () => {
-        console.log("getCowsOfOwnerFromContract");
-        console.log("ACCOUNT TO SEND: " + myAccount);
         //const cowList = await getAllCows();  //REMEMBER THIS IS JUST TO SHOW THAT DEATH COWS ARE ALREADY IN THE BLOCKCHAIN
         const cowList = await getCowsOfOwner(myAccount);
         return cowList;
@@ -121,13 +114,13 @@ export default function InsertMilk() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2vh',
-        backgroundColor: 'white', // Aggiunge uno sfondo di colore rosso
+        backgroundColor: 'white',
     };
 
     return (
         <div style={containerStyle}>
         <div style={formContainerStyle}>
-        <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue"}}>Insert data milk</h2>
+        <h2 style={{ marginBottom: '30px', width: '50%', textAlign: 'center', color: "blue"}}>Insert Milk Data</h2>
         <div style={{ marginBottom: '30px', width: '50%' }}>
             <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Cow</InputLabel>

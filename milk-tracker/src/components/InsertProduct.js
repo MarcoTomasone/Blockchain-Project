@@ -23,41 +23,31 @@ export default function InsertProduct() {
     const TextFieldIds = ["dateOfProduction", "productsType", "expiryDate"];
   
     useEffect(() => {
-        console.log("OPENING LOG: " + myAccount);
         getAccounts().then((accounts) => {
-            console.log("GET: " + accounts);
-            console.log("ACCOUNT0: " + accounts[0]);
             setMyAccount(accounts[0]);
         });
     }, []); // empty dependency array to run only once
 
-        useEffect(() => {
-            console.log("ACCOUNT CHANGED: " + myAccount); 
-            if (myAccount !== null) {  
-                getMilksOfOwnerFromContract().then((milkList) => {
-                console.log("milkList")
-                console.log(milkList);
-                setMilkList(milkList);
-                });
-            }   
-        }, [myAccount]);
+    useEffect(() => {
+        if (myAccount !== null) {  
+            getMilksOfOwnerFromContract().then((milkList) => {
+            setMilkList(milkList);
+            });
+        }   
+    }, [myAccount]);
 
-        window.ethereum.on('accountsChanged', function (accounts) {
-            console.log("ACCOUNTSSSSS: " + accounts);
-            setMyAccount(accounts[0]);
-        });
+    window.ethereum.on('accountsChanged', function (accounts) {
+        setMyAccount(accounts[0]);
+    });
 
     
     const getMilksOfOwnerFromContract = async () => {
-        console.log("getMilksOfOwnerFromContract");
-        console.log(myAccount);
         const cowList = await getMilksOfOwner(myAccount);
         return cowList;
     };
 
     const handleChange = (event) => {
         setMilkId(event.target.value);
-        console.log(event.target.value);
     };
 
     const sendData = async () => {
@@ -101,7 +91,6 @@ export default function InsertProduct() {
             setDateOfProduction(dayjs());
             setExpiryDate(dayjs());
             document.getElementById("demo-simple-select").style.border = "2px solid blue";
-            console.log("productId: " + productId);
             setQrCodeText(productId);
         }  
         else 
@@ -140,7 +129,7 @@ export default function InsertProduct() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2vh',
-        backgroundColor: 'white', // Aggiunge uno sfondo di colore rosso
+        backgroundColor: 'white',
     };
 
     const qrCodeContainer = {
@@ -160,7 +149,7 @@ export default function InsertProduct() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div style={containerStyle}>
         <div style={formContainerStyle}>
-                <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert data products</h2>
+                <h2 style={{ marginBottom: '30px', width: '70%', textAlign: 'center', color: "blue"}}>Insert Products Data</h2>
                 <div id="qrcode" style={qrCodeContainer}>
                     {qrCodeText != null ? (
                         <QRCode value={qrCodeText.toString()} />

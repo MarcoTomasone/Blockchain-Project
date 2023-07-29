@@ -91,9 +91,8 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 
 function LoginView() {
-
     // Enable/Disable console debug.
-    const isConsoleActive = true;
+    const isConsoleActive = false;
     // Variable to navigate to another page.
     const navigator = useNavigate();
   
@@ -102,34 +101,26 @@ function LoginView() {
         if (isConsoleActive) console.log("Verifica presenza di MetaMask");
         // Check if MetaMask is installed.
         if (typeof window.ethereum === 'undefined') {
-            //alert("Metamask non installato");
-            AlertDialog({title: "Connection Error", description: "Metamask not installed"});
+            alert("Metamask not installed");
         }
         // Try to connect to MetaMask.
         if (isConsoleActive) console.log("Tentativo di accesso a MetaMask");
         window.ethereum.request({ method: 'eth_requestAccounts' })
             .then(async () => {
-                if (isConsoleActive) console.log("Accesso avvenuto con successo");
                 //Ricevi account
                 const account = window.ethereum.selectedAddress;
-                console.log(account);
                 var dairyExist = await checkIfDairyExists(account);
-                console.log('CHECK DAIRY EXIST ' + dairyExist);
-               
                 if(toUrl === '/insert' && dairyExist) {
-                    // If the connection is successful, navigate to the homepage.
-                    console.log("I'm here")
+                    // If the connection is successful, navigate to the homepage
                     navigator(toUrl); }
                 else if(toUrl === '/view')
                     navigator(toUrl);
                 else {
-                    console.log('Dairy not registered');
                     navigator('/AddDairy');
                 }
             })
             .catch(() => {
-                return <AlertDialog title={"Connection Error"} description={"Error during the connection to Metamask. Try later."}></AlertDialog>;
-
+                alert("Error during the connection to Metamask. Try later.");
             });
     }
 

@@ -17,20 +17,12 @@ export default function InsertCow() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log("OPENING LOG: " + myAccount);
         getAccounts().then((accounts) => {
-            console.log("GET: " + accounts);
-            console.log("ACCOUNT0: " + accounts[0]);
             setMyAccount(accounts[0]);
         });
     }, []); // empty dependency array to run only once
 
-    useEffect(() => {
-        console.log("ACCOUNT CHANGED: " + myAccount);  
-    }, [myAccount]);
-
     window.ethereum.on('accountsChanged', function (accounts) {
-        console.log("ACCOUNTSSSSS: " + accounts);
         setMyAccount(accounts[0]);
     });
 
@@ -63,9 +55,8 @@ export default function InsertCow() {
                   document.getElementById(id).value = "";
                   document.getElementById(id).style.border = "2px solid blue";
                 });
-                console.log("Transazione confermata su MetaMask");
               } catch (error) {
-                console.log("Errore durante l'invio dei dati:", error);
+                alert("Errore durante l'invio dei dati:", error);
               }
         } else {
             alert("Please fill all the fields");

@@ -18,20 +18,12 @@ export default function ViewView() {
     const [isCodeInvalid, setIsCodeInvalid] = useState(false);
     
     useEffect(() => {
-        console.log("OPENING LOG: " + myAccount);
         getAccounts().then((accounts) => {
-            console.log("GET: " + accounts);
-            console.log("ACCOUNT0: " + accounts[0]);
             setMyAccount(accounts[0]);
         });
     }, []); // empty dependency array to run only once
 
-    useEffect(() => {
-        console.log("ACCOUNT CHANGED: " + myAccount);  
-    }, [myAccount]);
-
     window.ethereum.on('accountsChanged', function (accounts) {
-        console.log("ACCOUNTSSSSS: " + accounts);
         setMyAccount(accounts[0]);
     });
 
@@ -61,10 +53,7 @@ export default function ViewView() {
 
     const loadProductInfo = async () => {
       try{
-            console.log(productId);
-            console.log("loadProductInfo");
             var data = await loadProductInfoFromContract(productId);
-            console.log(data);
             setProductData(data);
             loadMilkInfo(data.milkId);
             setIsCodeInvalid(false);
@@ -79,20 +68,14 @@ export default function ViewView() {
     };
         
     const loadMilkInfo = async (milkId) => {
-        console.log("loadMilkInfo");
-        console.log(milkId);
         var data = await loadMilkInfoFromContract(milkId);
         setIsMilkSpoiled(data.milkState);
-        console.log(data);
         setMilkData(data.milk);
         loadCowInfo(data.milk.cowId);
     };
 
     const loadCowInfo = async (cowId) => {
-        console.log("loadCowInfo");
-        console.log(cowId);
         var data = await loadCowInfoFromContract(cowId);
-        console.log(data);
         setCowData(data);
     };
 
@@ -269,8 +252,5 @@ export default function ViewView() {
             </Grid>
         </Grid>
         </div>
-    );
-    
-    
-        
+    );     
 }
