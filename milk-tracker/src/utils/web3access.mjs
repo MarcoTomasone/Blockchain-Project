@@ -90,7 +90,7 @@ function getMilksOfOwner(account) {
     return MilkTracker.methods.getMilksOfOwner()
                 .call({ from: account, gas:3000000});   
     } catch (error) {
-        console.log("SONO IN ERRORE");
+        console.log("ERRORs");
 
     }
 }

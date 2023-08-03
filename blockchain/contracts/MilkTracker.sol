@@ -122,7 +122,6 @@ contract MilkTracker {
     }
     
     function addMilk(uint256 _cowId, string memory _dateOfProduction) public onlyOwnerOfCow(_cowId) {
-        //Check if cow exists
         Milk memory myMilk = Milk(milkList.length, _cowId, _dateOfProduction);
         spoiledMilks[milkList.length] = false;
         milkList.push(myMilk);
@@ -131,7 +130,6 @@ contract MilkTracker {
     }
     
     function addProduct(uint256 _milkId, string memory _dateOfProduction, string memory _productType, string memory _expiryDate) public  onlyOwnerOfMilk(_milkId) {
-        //Check if milk exists
         Product memory  myProduct = Product( productList.length, _milkId, _dateOfProduction, _productType, _expiryDate);
         emit ProductAdded(productList.length); 
         productList.push(myProduct);
